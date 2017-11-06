@@ -1,9 +1,9 @@
-package com.fastaoe.gankio.home;
+package com.fastaoe.gankio.model.services;
 
-import com.fastaoe.gankio.home.model.Content;
-import com.fastaoe.gankio.home.model.History;
 
-import retrofit2.Call;
+import com.fastaoe.gankio.model.beans.Content;
+import com.fastaoe.gankio.model.beans.History;
+
 import retrofit2.http.GET;
 import rx.Observable;
 
@@ -12,7 +12,7 @@ import rx.Observable;
  * description:
  */
 
-public interface BlogService {
+public interface BlogService extends IService {
 
     @GET("day/history")
     Observable<History> getBlogHistory();

@@ -1,22 +1,18 @@
 package com.fastaoe.gankio.home;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.view.View;
 import android.widget.TextView;
 
 import com.fastaoe.gankio.R;
 import com.fastaoe.gankio.base.MyBaseActivity;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends MyBaseActivity implements MvpView {
+public class MainActivity extends MyBaseActivity implements ContentContract.View {
 
     @BindView(R.id.textview)
     TextView textview;
-    private MvpPresenter mvpPresenter;
+    private ContentPresenter contentPresenter;
 
     @Override
     protected int getContentView() {
@@ -34,13 +30,13 @@ public class MainActivity extends MyBaseActivity implements MvpView {
 
     @Override
     protected void initData() {
-        mvpPresenter = new MvpPresenter();
-        mvpPresenter.attachView(this);
+        contentPresenter = new ContentPresenter();
+        contentPresenter.attachView(this);
     }
 
     @Override
     protected void destroyData() {
-        mvpPresenter.detachView();
+        contentPresenter.detachView();
     }
 
     @Override
@@ -50,6 +46,6 @@ public class MainActivity extends MyBaseActivity implements MvpView {
 
     @OnClick(R.id.textview)
     public void onTextClick() {
-        mvpPresenter.getData();
+        contentPresenter.getData();
     }
 }

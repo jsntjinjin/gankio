@@ -1,4 +1,4 @@
-package com.fastaoe.gankio.home.model;
+package com.fastaoe.gankio.model.beans;
 
 import java.util.List;
 

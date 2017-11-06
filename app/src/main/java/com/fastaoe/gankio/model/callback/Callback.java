@@ -1,11 +1,11 @@
-package com.fastaoe.gankio.home;
+package com.fastaoe.gankio.model.callback;
 
 /**
  * Created by jinjin on 17/11/1.
  * description:
  */
 
-public interface MvpCallback<T> {
+public interface Callback<T> {
 
     /**
      * 数据请求成功

@@ -1,7 +1,10 @@
-package com.fastaoe.gankio.home;
+package com.fastaoe.gankio.model.models;
 
-import com.fastaoe.gankio.home.model.Content;
-import com.fastaoe.gankio.home.model.History;
+import com.fastaoe.gankio.model.beans.Content;
+import com.fastaoe.gankio.model.beans.History;
+import com.fastaoe.gankio.model.callback.Callback;
+import com.fastaoe.gankio.model.services.BlogService;
+import com.fastaoe.gankio.model.services.HttpEngine;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -11,37 +14,24 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by jinjin on 17/11/1.
- * description: 模拟网络请求
+ * Created by jinjin on 17/11/6.
+ * description:
  */
 
-public class MvpModel {
+public class Blog extends BaseModel<Content> {
 
-    public static void getNetData(final MvpCallback<String> callback) {
+    @Override
+    public void execute(final Callback<Content> callback) {
 
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-                .build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://gank.io/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .client(okHttpClient)
-                .build();
-
-        final BlogService blogService = retrofit.create(BlogService.class);
-
-        blogService.getBlogHistory()
+        HttpEngine.getBlogService().getBlogHistory()
                 .flatMap(new Func1<History, Observable<Content>>() {
                     @Override
                     public Observable<Content> call(History history) {
-                        return blogService.getContentForDay();
+                        return HttpEngine.getBlogService().getContentForDay();
                     }
                 })
                 .subscribeOn(Schedulers.newThread())
@@ -58,9 +48,8 @@ public class MvpModel {
 
                     @Override
                     public void onNext(Content content) {
-                        callback.onSuccess(content.results.get(0)._id);
+                        callback.onSuccess(content);
                     }
                 });
     }
-
 }

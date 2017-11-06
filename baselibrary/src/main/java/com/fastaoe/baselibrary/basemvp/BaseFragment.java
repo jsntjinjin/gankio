@@ -1,0 +1,76 @@
+package com.fastaoe.baselibrary.basemvp;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
+import butterknife.ButterKnife;
+
+/**
+ * Created by jinjin on 17/11/6.
+ * description:
+ */
+
+public abstract class BaseFragment extends Fragment implements IBaseView{
+
+    protected Context mContext;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View contentView = inflater.inflate(getContentView(), container, false);
+        ButterKnife.bind(this, contentView);
+        return contentView;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mContext = getActivity();
+        initView();
+        initData();
+    }
+
+    protected abstract int getContentView();
+
+    protected abstract void initView();
+
+    protected abstract void initData();
+
+    @Override
+    public void showLoading() {
+        checkActivityAttached();
+        ((BaseActivity) mContext).showLoading();
+    }
+
+    @Override
+    public void hideLoading() {
+        checkActivityAttached();
+        ((BaseActivity) mContext).hideLoading();
+    }
+
+    @Override
+    public void showToast(String msg) {
+        checkActivityAttached();
+        ((BaseActivity) mContext).showToast(msg);
+    }
+
+    @Override
+    public void showError() {
+        checkActivityAttached();
+        ((BaseActivity) mContext).showError();
+    }
+
+    public void checkActivityAttached() {
+        if (getActivity() == null) {
+            throw new RuntimeException(getActivity().getClass().getSimpleName() + "is not attached!");
+        }
+    }
+
+
+}

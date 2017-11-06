@@ -7,21 +7,21 @@ package com.fastaoe.baselibrary.basemvp;
 
 public class BasePresenter<V extends IBaseView> {
 
-    private V mvpView;
+    private V view;
 
     /**
      * 绑定view
-     * @param mvpView
+     * @param view
      */
-    public void attachView(V mvpView) {
-        this.mvpView = mvpView;
+    public void attachView(V view) {
+        this.view = view;
     }
 
     /**
      * 解除view
      */
     public void detachView() {
-        this.mvpView = null;
+        this.view = null;
     }
 
     /**
@@ -29,7 +29,7 @@ public class BasePresenter<V extends IBaseView> {
      * @return
      */
     public boolean isViewAttached() {
-        return this.mvpView != null;
+        return this.view != null;
     }
 
     /**
@@ -37,7 +37,7 @@ public class BasePresenter<V extends IBaseView> {
      * @return
      */
     public V getView() {
-        return mvpView;
+        return view;
     }
 
 }
