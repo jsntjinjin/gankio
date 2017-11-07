@@ -7,7 +7,7 @@ package com.fastaoe.gankio.model;
 
 public class Token {
 
-    private static final String PACKAGE_NAME = "com.fastaoe.gankio.model.model";
+    private static final String PACKAGE_NAME = "com.fastaoe.gankio.model.models.";
 
     public static final String BLOG = PACKAGE_NAME + "Blog";
 

@@ -1,18 +1,10 @@
 package com.fastaoe.gankio.model.models;
 
-import com.fastaoe.gankio.model.beans.Content;
-import com.fastaoe.gankio.model.beans.History;
-import com.fastaoe.gankio.model.callback.Callback;
-import com.fastaoe.gankio.model.services.BlogService;
+import com.fastaoe.gankio.model.beans.HistoryForOneDay;
+import com.fastaoe.gankio.model.beans.HistoryList;
 import com.fastaoe.gankio.model.services.HttpEngine;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
-import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -22,34 +14,18 @@ import rx.schedulers.Schedulers;
  * description:
  */
 
-public class Blog extends BaseModel<Content> {
+public class Blog extends BaseModel<HistoryForOneDay> {
 
     @Override
-    public void execute(final Callback<Content> callback) {
-
-        HttpEngine.getBlogService().getBlogHistory()
-                .flatMap(new Func1<History, Observable<Content>>() {
+    public Observable<HistoryForOneDay> execute() {
+        return HttpEngine.getBlogService().getHistoryDay()
+                .flatMap(new Func1<HistoryList, Observable<HistoryForOneDay>>() {
                     @Override
-                    public Observable<Content> call(History history) {
-                        return HttpEngine.getBlogService().getContentForDay();
+                    public Observable<HistoryForOneDay> call(HistoryList historyList) {
+                        return HttpEngine.getBlogService().getHistoryForOneDay("2016", "4", "20");
                     }
                 })
                 .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Content>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Content content) {
-                        callback.onSuccess(content);
-                    }
-                });
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

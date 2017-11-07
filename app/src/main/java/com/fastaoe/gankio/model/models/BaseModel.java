@@ -2,6 +2,9 @@ package com.fastaoe.gankio.model.models;
 
 import com.fastaoe.gankio.model.callback.Callback;
 
+import rx.Observable;
+
+
 /**
  * Created by jinjin on 17/11/6.
  * description:
@@ -16,6 +19,6 @@ public abstract class BaseModel<T> {
         return this;
     }
 
-    public abstract void execute(Callback<T> callback);
+    public abstract Observable execute();
 
 }

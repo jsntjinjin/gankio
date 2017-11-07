@@ -20,12 +20,12 @@ public class Constants {
     public static String getEndPoint() {
         switch (ENV) {
             case DEV:
-                break;
+                return "http://gank.io/api/";
             case PRD:
-                break;
+                return "http://gank.io/api/";
             case STG:
-                break;
+                return "http://gank.io/api/";
         }
-        return "";
+        return "http://gank.io/api/";
     }
 }
