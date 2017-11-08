@@ -1,9 +1,7 @@
 package com.fastaoe.gankio.model.models;
 
-import com.fastaoe.gankio.model.callback.Callback;
 
-import rx.Observable;
-
+import io.reactivex.Observable;
 
 /**
  * Created by jinjin on 17/11/6.
@@ -19,6 +17,6 @@ public abstract class BaseModel<T> {
         return this;
     }
 
-    public abstract Observable execute();
+    public abstract Observable<T> execute();
 
 }

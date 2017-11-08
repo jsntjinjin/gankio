@@ -7,7 +7,7 @@ import java.util.List;
  * description:
  */
 
-public class AllData {
+public class AllContent {
 
     /**
      * error : false

@@ -1,12 +1,17 @@
 package com.fastaoe.gankio.home;
 
 import com.fastaoe.baselibrary.basemvp.BasePresenter;
+import com.fastaoe.gankio.model.beans.Search;
 import com.fastaoe.gankio.model.callback.Callback;
 import com.fastaoe.gankio.model.DataModel;
 import com.fastaoe.gankio.model.Token;
 import com.fastaoe.gankio.model.beans.HistoryForOneDay;
 
-import rx.Observer;
+import java.util.Random;
+
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+
 
 /**
  * Created by jinjin on 17/11/2.
@@ -23,22 +28,30 @@ public class ContentPresenter extends BasePresenter<ContentContract.View> implem
         getView().showLoading();
 
         //noinspection unchecked
-        DataModel.request(Token.BLOG)
+        DataModel.request(Token.SEARCH)
+                .params("android", "10", "1")
                 .execute()
-                .subscribe(new Observer<HistoryForOneDay>() {
+                .subscribe(new Observer<Search>() {
+                    Disposable disposable;
                     @Override
-                    public void onCompleted() {
+                    public void onSubscribe(Disposable d) {
+                        disposable = d;
+                    }
 
+                    @Override
+                    public void onNext(Search value) {
+                        getView().showData(value.getResults().get(new Random().nextInt(10)).getDesc());
+                        disposable.dispose();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        getView().showToast("onError");
                     }
 
                     @Override
-                    public void onNext(HistoryForOneDay o) {
-                        getView().showData(o.results.get(0)._id);
+                    public void onComplete() {
+
                     }
                 });
     }
