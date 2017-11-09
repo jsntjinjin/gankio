@@ -1,4 +1,4 @@
-package com.fastaoe.gankio.weight;
+package com.fastaoe.gankio.widget;
 
 /**
  * Created by jinjin on 17/11/6.

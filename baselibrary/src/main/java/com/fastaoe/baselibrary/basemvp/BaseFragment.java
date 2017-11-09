@@ -10,21 +10,23 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by jinjin on 17/11/6.
  * description:
  */
 
-public abstract class BaseFragment extends Fragment implements IBaseView{
+public abstract class BaseFragment extends Fragment implements IBaseView {
 
     protected Context mContext;
+    private Unbinder bind;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View contentView = inflater.inflate(getContentView(), container, false);
-        ButterKnife.bind(this, contentView);
+        bind = ButterKnife.bind(this, contentView);
         return contentView;
     }
 
@@ -36,11 +38,20 @@ public abstract class BaseFragment extends Fragment implements IBaseView{
         initData();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        destroyData();
+        bind.unbind();
+    }
+
     protected abstract int getContentView();
 
     protected abstract void initView();
 
     protected abstract void initData();
+
+    protected abstract void destroyData();
 
     @Override
     public void showLoading() {

@@ -11,9 +11,6 @@ public class MyBaseApplication extends Application{
 
     public static Application sAppContext;
 
-
-
-
     @Override
     public void onCreate() {
         super.onCreate();

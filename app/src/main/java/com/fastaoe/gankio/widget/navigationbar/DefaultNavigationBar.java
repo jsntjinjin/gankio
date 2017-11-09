@@ -1,4 +1,4 @@
-package com.fastaoe.gankio.weight.navigationbar;
+package com.fastaoe.gankio.widget.navigationbar;
 
 import android.app.Activity;
 import android.content.Context;
