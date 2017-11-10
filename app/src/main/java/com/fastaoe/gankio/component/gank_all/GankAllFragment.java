@@ -1,10 +1,21 @@
 package com.fastaoe.gankio.component.gank_all;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.fastaoe.baselibrary.basemvp.BaseFragment;
 import com.fastaoe.gankio.R;
-import com.fastaoe.gankio.component.MainActivity;
+import com.fastaoe.gankio.model.beans.AllContent;
+import com.fastaoe.gankio.utils.LogUtil;
+import com.fastaoe.gankio.widget.recycler.DefaultLoadCreator;
+import com.fastaoe.gankio.widget.recycler.DefaultRefreshCreator;
+import com.fastaoe.gankio.widget.recycler.base.RecyclerAdapter;
+import com.fastaoe.gankio.widget.recycler.base.ViewHolder;
+import com.fastaoe.gankio.widget.recycler.refresh.LoadRefreshRecyclerView;
+
+import butterknife.BindView;
 
 /**
  * Created by jinjin on 17/11/9.
@@ -13,7 +24,12 @@ import com.fastaoe.gankio.component.MainActivity;
 
 public class GankAllFragment extends BaseFragment implements GankAllContract.View {
 
+    private static final String TAG = "GankAllFragment";
+    @BindView(R.id.load_recycle)
+    LoadRefreshRecyclerView loadRecycle;
+
     private GankAllPresenter gankAllPresenter;
+    private RecyclerAdapter adapter;
 
     public static GankAllFragment newInstance(String item) {
         GankAllFragment fragment = new GankAllFragment();
@@ -30,14 +46,39 @@ public class GankAllFragment extends BaseFragment implements GankAllContract.Vie
 
     @Override
     protected void initView() {
+        gankAllPresenter = new GankAllPresenter();
+        gankAllPresenter.attachView(this);
+        loadRecycle.setLayoutManager(new LinearLayoutManager(mContext));
+        //loadRecycle.addItemDecoration(new LinearLayoutItemDecoration(this, R.drawable.item_dirver_01));
+        loadRecycle.addRefreshViewCreator(new DefaultRefreshCreator());
+        loadRecycle.addLoadViewCreator(new DefaultLoadCreator());
+        loadRecycle.addEmptyView(new View(mContext));
+        loadRecycle.setAdapter(initAdapter());
+        loadRecycle.setOnRefreshListener(() -> {
+            gankAllPresenter.refreshContent(getArguments().getString("flag"), false);
+        });
+        loadRecycle.setOnLoadMoreListener(() -> {
+            gankAllPresenter.refreshContent(getArguments().getString("flag"), true);
+        });
+    }
 
+    private RecyclerView.Adapter initAdapter() {
+        adapter = new RecyclerAdapter<AllContent.ResultsBean>(mContext, gankAllPresenter.getList(), R.layout.item_gank_all) {
+            @Override
+            protected void convert(ViewHolder holder, AllContent.ResultsBean data, int position) {
+                holder.setText(R.id.item_title, data.getDesc());
+            }
+        };
+
+        adapter.setOnItemClickListener(position -> {
+
+        });
+        return adapter;
     }
 
     @Override
     protected void initData() {
-        gankAllPresenter = new GankAllPresenter();
-        gankAllPresenter.attachView(this);
-        gankAllPresenter.refreshContent(getArguments().getString("flag"), "10", "1");
+        gankAllPresenter.refreshContent(getArguments().getString("flag"), false);
     }
 
     @Override
@@ -46,7 +87,20 @@ public class GankAllFragment extends BaseFragment implements GankAllContract.Vie
     }
 
     @Override
-    public void showContent() {
+    public void refreshContent() {
+        if (adapter != null) {
+            LogUtil.d(TAG,adapter.getItemCount() + "");
+            adapter.notifyDataSetChanged();
+        }
+    }
 
+    @Override
+    public void stopRefresh() {
+        loadRecycle.stopRefresh();
+    }
+
+    @Override
+    public void stopLoadMore() {
+        loadRecycle.stopLoad();
     }
 }

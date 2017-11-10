@@ -1,5 +1,6 @@
 package com.fastaoe.gankio.model.beans;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,7 +34,7 @@ public class AllContent {
         this.results = results;
     }
 
-    public static class ResultsBean {
+    public class ResultsBean {
         /**
          * _id : 59fa764b421aa90fe72535ea
          * createdAt : 2017-11-02T09:35:07.929Z
@@ -48,9 +49,9 @@ public class AllContent {
          */
 
         private String _id;
-        private String createdAt;
+        private Date createdAt;
         private String desc;
-        private String publishedAt;
+        private Date publishedAt;
         private String source;
         private String type;
         private String url;
@@ -66,11 +67,11 @@ public class AllContent {
             this._id = _id;
         }
 
-        public String getCreatedAt() {
+        public Date getCreatedAt() {
             return createdAt;
         }
 
-        public void setCreatedAt(String createdAt) {
+        public void setCreatedAt(Date createdAt) {
             this.createdAt = createdAt;
         }
 
@@ -82,11 +83,11 @@ public class AllContent {
             this.desc = desc;
         }
 
-        public String getPublishedAt() {
+        public Date getPublishedAt() {
             return publishedAt;
         }
 
-        public void setPublishedAt(String publishedAt) {
+        public void setPublishedAt(Date publishedAt) {
             this.publishedAt = publishedAt;
         }
 
