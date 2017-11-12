@@ -1,12 +1,14 @@
 package com.fastaoe.gankio.component.gank_all;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.fastaoe.baselibrary.basemvp.BasePresenter;
 import com.fastaoe.gankio.R;
 import com.fastaoe.gankio.model.DataModel;
 import com.fastaoe.gankio.model.Token;
 import com.fastaoe.gankio.model.beans.AllContent;
+import com.fastaoe.gankio.utils.LogUtil;
 
 import java.util.Comparator;
 import java.util.Date;
@@ -16,8 +18,12 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by jinjin on 17/11/9.
@@ -36,7 +42,7 @@ public class GankAllPresenter extends BasePresenter<GankAllContract.View> implem
     }
 
     @Override
-    public void refreshContent(String category, boolean isLoadMore) {
+    public void refreshContent(boolean isLoadMore) {
         if (!isViewAttached()) {
             return;
         }
@@ -47,68 +53,49 @@ public class GankAllPresenter extends BasePresenter<GankAllContract.View> implem
             page++;
         }
 
+        lastPosition = 0;
+
         //noinspection unchecked
         Observable.zip(
                 DataModel.request(Token.ALL_CONTENT)
-                        .params(category, "10", String.valueOf(page))
-                        .execute(),
-                DataModel.request(Token.ALL_CONTENT)
                         .params("福利", "10", String.valueOf(page))
                         .execute(),
+                DataModel.request(Token.ALL_CONTENT)
+                        .params("休息视频", "10", String.valueOf(page))
+                        .execute(),
                 this::mergeRest2MeiziDesc)
-                .map(data -> ((AllContent) data).getResults())
-                .toSortedList((meizi, meizi2) -> ((AllContent.ResultsBean) meizi).getPublishedAt()
-                        .compareTo(((AllContent.ResultsBean) meizi2).getPublishedAt()))
-                .subscribe(new Observer<List<AllContent.ResultsBean>>() {
+                .subscribeOn(Schedulers.io())
+                .map(o -> ((AllContent)o).getResults())
+                .flatMap(o -> Observable.fromIterable((List<AllContent.ResultsBean>)o))
+                .toSortedList((o, t1) -> -((AllContent.ResultsBean) o).getPublishedAt()
+                        .compareTo(((AllContent.ResultsBean) t1).getPublishedAt()))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<AllContent.ResultsBean>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(List<AllContent.ResultsBean> value) {
+                    public void onSuccess(List<AllContent.ResultsBean> value) {
+                        if (!isLoadMore) {
+                            results.clear();
+                        }
+                        results.addAll(value);
+                        // getView().refreshContent();
 
+                        if (!isLoadMore) {
+                            getView().stopRefresh();
+                        } else {
+                            getView().stopLoadMore();
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
 
                     }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
                 });
-//                .subscribe(new Observer<AllContent.ResultsBean>() {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(AllContent.ResultsBean value) {
-//                        if (!isLoadMore) {
-//                            results.clear();
-//                        }
-//                        results.addAll(value);
-//                        getView().refreshContent();
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//                        if (!isLoadMore) {
-//                            getView().stopRefresh();
-//                        } else {
-//                            getView().stopLoadMore();
-//                        }
-//                    }
-//                });
     }
 
     private AllContent mergeRest2MeiziDesc(AllContent meizi, AllContent video) {

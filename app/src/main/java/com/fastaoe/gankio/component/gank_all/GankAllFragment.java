@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.fastaoe.baselibrary.basemvp.BaseFragment;
 import com.fastaoe.gankio.R;
 import com.fastaoe.gankio.model.beans.AllContent;
@@ -31,11 +33,8 @@ public class GankAllFragment extends BaseFragment implements GankAllContract.Vie
     private GankAllPresenter gankAllPresenter;
     private RecyclerAdapter adapter;
 
-    public static GankAllFragment newInstance(String item) {
+    public static GankAllFragment newInstance() {
         GankAllFragment fragment = new GankAllFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("flag", item);
-        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -55,10 +54,10 @@ public class GankAllFragment extends BaseFragment implements GankAllContract.Vie
         loadRecycle.addEmptyView(new View(mContext));
         loadRecycle.setAdapter(initAdapter());
         loadRecycle.setOnRefreshListener(() -> {
-            gankAllPresenter.refreshContent(getArguments().getString("flag"), false);
+            gankAllPresenter.refreshContent(false);
         });
         loadRecycle.setOnLoadMoreListener(() -> {
-            gankAllPresenter.refreshContent(getArguments().getString("flag"), true);
+            gankAllPresenter.refreshContent(true);
         });
     }
 
@@ -66,7 +65,9 @@ public class GankAllFragment extends BaseFragment implements GankAllContract.Vie
         adapter = new RecyclerAdapter<AllContent.ResultsBean>(mContext, gankAllPresenter.getList(), R.layout.item_gank_all) {
             @Override
             protected void convert(ViewHolder holder, AllContent.ResultsBean data, int position) {
-                holder.setText(R.id.item_title, data.getDesc());
+                holder.setText(R.id.tv_title, data.getDesc());
+                ImageView view = holder.getView(R.id.iv_meizi);
+                Glide.with(mContext).load(data.getUrl()).into(view);
             }
         };
 
@@ -78,7 +79,7 @@ public class GankAllFragment extends BaseFragment implements GankAllContract.Vie
 
     @Override
     protected void initData() {
-        gankAllPresenter.refreshContent(getArguments().getString("flag"), false);
+        gankAllPresenter.refreshContent(false);
     }
 
     @Override
@@ -89,7 +90,6 @@ public class GankAllFragment extends BaseFragment implements GankAllContract.Vie
     @Override
     public void refreshContent() {
         if (adapter != null) {
-            LogUtil.d(TAG,adapter.getItemCount() + "");
             adapter.notifyDataSetChanged();
         }
     }

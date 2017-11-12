@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.fastaoe.baselibrary.basemvp.BaseFragment;
 import com.fastaoe.gankio.R;
+import com.fastaoe.gankio.component.DefaultFragment;
 import com.fastaoe.gankio.component.gank_all.GankAllFragment;
 import com.fastaoe.gankio.widget.indicator.IndicatorAdapter;
 import com.fastaoe.gankio.widget.indicator.TrackIndicatorView;
@@ -105,9 +106,9 @@ public class GankFragment extends BaseFragment {
             public Fragment getItem(int position) {
                 switch (position) {
                     case 0:
-                        return GankAllFragment.newInstance(items[position]);
+                        return GankAllFragment.newInstance();
                     default:
-                        return GankAllFragment.newInstance(items[position]);
+                        return DefaultFragment.newInstance(items[position]);
                 }
             }
 

@@ -23,7 +23,7 @@ public interface GankAllContract {
 
     public interface Presenter {
 
-        void refreshContent(String category, boolean isLoadMore);
+        void refreshContent(boolean isLoadMore);
 
         List<AllContent.ResultsBean> getList();
     }
