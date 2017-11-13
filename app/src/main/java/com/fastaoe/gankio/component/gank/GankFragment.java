@@ -31,7 +31,7 @@ public class GankFragment extends BaseFragment {
     @BindView(R.id.viewpager)
     ViewPager viewpager;
 
-    private static final String[] items = {"all", "福利", "Android", "iOS", "休息", "拓展", "前端"};
+    private static final String[] items = {"all", "Android", "iOS", "前端", "拓展"};
 
     public static GankFragment newInstance() {
         GankFragment fragment = new GankFragment();

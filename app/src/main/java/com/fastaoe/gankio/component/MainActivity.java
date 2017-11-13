@@ -6,9 +6,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.fastaoe.baselibrary.basemvp.FragmentManagerHelper;
 import com.fastaoe.gankio.R;
 import com.fastaoe.gankio.base.MyBaseActivity;
 import com.fastaoe.gankio.component.gank.GankFragment;
+import com.fastaoe.gankio.component.gank_meizi.MeiziFragment;
+import com.fastaoe.gankio.component.other.AboutFragment;
 
 import butterknife.BindView;
 
@@ -22,7 +25,13 @@ public class MainActivity extends MyBaseActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    private ActionBarDrawerToggle actionBarDrawerToggle;
+    //    private ActionBarDrawerToggle actionBarDrawerToggle;
+
+    private FragmentManagerHelper helper;
+
+    private GankFragment gankFragment;
+    private MeiziFragment meiziFragment;
+    private AboutFragment aboutFragment;
 
     @Override
     protected int getContentView() {
@@ -35,7 +44,7 @@ public class MainActivity extends MyBaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerContent, toolbar, R.string.app_name, R.string.app_name) {
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerContent, toolbar, R.string.app_name, R.string.app_name) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -46,11 +55,9 @@ public class MainActivity extends MyBaseActivity {
                 super.onDrawerClosed(drawerView);
             }
         };
-    }
-
-    @Override
-    protected void initView() {
         drawerNavigation.setNavigationItemSelectedListener(item -> {
+            chooseFragment(item.getTitle().toString());
+            toolbar.setTitle(item.getTitle().toString());
             drawerContent.closeDrawers();
             return false;
         });
@@ -59,15 +66,34 @@ public class MainActivity extends MyBaseActivity {
     }
 
     @Override
+    protected void initView() {
+    }
+
+    @Override
     protected void initData() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.content_frame, GankFragment.newInstance())
-                .commit();
+        helper = new FragmentManagerHelper(getSupportFragmentManager(), R.id.content_frame);
+        chooseFragment("干货");
     }
 
     @Override
     protected void destroyData() {
+    }
+
+    private void chooseFragment(String itemTitle) {
+        switch (itemTitle) {
+            case "干货":
+                if (gankFragment == null) gankFragment = GankFragment.newInstance();
+                helper.switchFragment(gankFragment);
+                break;
+            case "妹纸":
+                if (meiziFragment == null) meiziFragment = MeiziFragment.newInstance(itemTitle);
+                helper.switchFragment(meiziFragment);
+                break;
+            case "关于我们":
+                if (aboutFragment == null) aboutFragment = AboutFragment.newInstance(itemTitle);
+                helper.switchFragment(aboutFragment);
+                break;
+        }
     }
 
 }

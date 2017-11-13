@@ -24,7 +24,7 @@
                 <item
                     android:id="@+id/sign_in_github"
                     android:icon="@mipmap/ic_launcher"
-                    android:title="登录github"/>
+                    android:title="登录Github"/>
                 <item
                     android:id="@+id/my_history"
                     android:icon="@mipmap/ic_launcher"

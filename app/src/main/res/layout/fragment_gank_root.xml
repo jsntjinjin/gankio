@@ -9,7 +9,7 @@
 
     <com.fastaoe.gankio.widget.indicator.TrackIndicatorView
         android:id="@+id/trackView"
-        app:visibleNums="5"
+        app:visibleNums="3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

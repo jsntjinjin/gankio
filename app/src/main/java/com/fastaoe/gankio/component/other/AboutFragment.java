@@ -1,4 +1,4 @@
-package com.fastaoe.gankio.component;
+package com.fastaoe.gankio.component.other;
 
 import android.os.Bundle;
 import android.widget.TextView;
@@ -13,12 +13,12 @@ import butterknife.BindView;
  * description:
  */
 
-public class DefaultFragment extends BaseFragment {
+public class AboutFragment extends BaseFragment {
     @BindView(R.id.text_view)
     TextView textView;
 
-    public static DefaultFragment newInstance(String item) {
-        DefaultFragment fragment = new DefaultFragment();
+    public static AboutFragment newInstance(String item) {
+        AboutFragment fragment = new AboutFragment();
         Bundle bundle = new Bundle();
         bundle.putString("flag", item);
         fragment.setArguments(bundle);
