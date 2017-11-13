@@ -1,28 +1,19 @@
 package com.fastaoe.gankio.component.gank_all;
 
-import android.text.TextUtils;
-import android.util.Log;
-
 import com.fastaoe.baselibrary.basemvp.BasePresenter;
-import com.fastaoe.gankio.R;
 import com.fastaoe.gankio.model.DataModel;
 import com.fastaoe.gankio.model.Token;
 import com.fastaoe.gankio.model.beans.AllContent;
-import com.fastaoe.gankio.utils.LogUtil;
 
-import java.util.Comparator;
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -67,8 +58,8 @@ public class GankAllPresenter extends BasePresenter<GankAllContract.View> implem
                 .subscribeOn(Schedulers.io())
                 .map(o -> ((AllContent)o).getResults())
                 .flatMap(o -> Observable.fromIterable((List<AllContent.ResultsBean>)o))
-                .toSortedList((o, t1) -> -((AllContent.ResultsBean) o).getPublishedAt()
-                        .compareTo(((AllContent.ResultsBean) t1).getPublishedAt()))
+                .toSortedList((o, t1) ->
+                        ((AllContent.ResultsBean) t1).getPublishedAt().compareTo(((AllContent.ResultsBean) o).getPublishedAt()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<AllContent.ResultsBean>>() {
                     @Override

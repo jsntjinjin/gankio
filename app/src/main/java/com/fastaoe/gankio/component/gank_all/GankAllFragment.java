@@ -1,18 +1,20 @@
 package com.fastaoe.gankio.component.gank_all;
 
-import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.fastaoe.baselibrary.basemvp.BaseFragment;
 import com.fastaoe.gankio.R;
 import com.fastaoe.gankio.model.beans.AllContent;
-import com.fastaoe.gankio.utils.LogUtil;
 import com.fastaoe.gankio.widget.recycler.DefaultLoadCreator;
 import com.fastaoe.gankio.widget.recycler.DefaultRefreshCreator;
+import com.fastaoe.gankio.widget.recycler.GridLayoutItemDecoration;
+import com.fastaoe.gankio.widget.recycler.LinearLayoutItemDecoration;
 import com.fastaoe.gankio.widget.recycler.base.RecyclerAdapter;
 import com.fastaoe.gankio.widget.recycler.base.ViewHolder;
 import com.fastaoe.gankio.widget.recycler.refresh.LoadRefreshRecyclerView;
@@ -47,11 +49,12 @@ public class GankAllFragment extends BaseFragment implements GankAllContract.Vie
     protected void initView() {
         gankAllPresenter = new GankAllPresenter();
         gankAllPresenter.attachView(this);
-        loadRecycle.setLayoutManager(new LinearLayoutManager(mContext));
-        //loadRecycle.addItemDecoration(new LinearLayoutItemDecoration(this, R.drawable.item_dirver_01));
+        loadRecycle.setLayoutManager(new GridLayoutManager(mContext, 2));
+//        loadRecycle.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        loadRecycle.addItemDecoration(new GridLayoutItemDecoration(mContext, R.drawable.shape_item_dirver_01));
         loadRecycle.addRefreshViewCreator(new DefaultRefreshCreator());
         loadRecycle.addLoadViewCreator(new DefaultLoadCreator());
-        loadRecycle.addEmptyView(new View(mContext));
+//        loadRecycle.addEmptyView(new View(mContext));
         loadRecycle.setAdapter(initAdapter());
         loadRecycle.setOnRefreshListener(() -> {
             gankAllPresenter.refreshContent(false);
@@ -67,7 +70,7 @@ public class GankAllFragment extends BaseFragment implements GankAllContract.Vie
             protected void convert(ViewHolder holder, AllContent.ResultsBean data, int position) {
                 holder.setText(R.id.tv_title, data.getDesc());
                 ImageView view = holder.getView(R.id.iv_meizi);
-                Glide.with(mContext).load(data.getUrl()).into(view);
+                Glide.with(mContext).load(data.getUrl()).apply(new RequestOptions().centerCrop()).into(view);
             }
         };
 
