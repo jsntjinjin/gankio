@@ -1,38 +1,31 @@
 package com.fastaoe.gankio.component.gank_meizi;
 
-import android.os.Bundle;
-import android.widget.TextView;
-
 import com.fastaoe.baselibrary.basemvp.BaseFragment;
 import com.fastaoe.gankio.R;
-
-import butterknife.BindView;
 
 /**
  * Created by jinjin on 2017/11/11.
  * description:
  */
 
-public class MeiziFragment extends BaseFragment {
-    @BindView(R.id.text_view)
-    TextView textView;
+public class MeiziFragment extends BaseFragment implements MeiziContract.View {
 
-    public static MeiziFragment newInstance(String item) {
+    private MeiziPresenter meiziPresenter;
+
+    public static MeiziFragment newInstance() {
         MeiziFragment fragment = new MeiziFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("flag", item);
-        fragment.setArguments(bundle);
         return fragment;
     }
 
     @Override
     protected int getContentView() {
-        return R.layout.fragment_default;
+        return R.layout.fragment_gank_meizi;
     }
 
     @Override
     protected void initView() {
-        textView.setText(getArguments().getString("flag"));
+        meiziPresenter = new MeiziPresenter();
+        meiziPresenter.attachView(this);
     }
 
     @Override
@@ -42,6 +35,21 @@ public class MeiziFragment extends BaseFragment {
 
     @Override
     protected void destroyData() {
+        meiziPresenter.detachView();
+    }
+
+    @Override
+    public void refreshContent() {
+
+    }
+
+    @Override
+    public void stopRefresh() {
+
+    }
+
+    @Override
+    public void stopLoadMore() {
 
     }
 }

@@ -14,6 +14,7 @@ import com.fastaoe.baselibrary.basemvp.BaseFragment;
 import com.fastaoe.gankio.R;
 import com.fastaoe.gankio.component.DefaultFragment;
 import com.fastaoe.gankio.component.gank_all.GankAllFragment;
+import com.fastaoe.gankio.component.gank_other.GankOtherFragment;
 import com.fastaoe.gankio.widget.indicator.IndicatorAdapter;
 import com.fastaoe.gankio.widget.indicator.TrackIndicatorView;
 
@@ -31,7 +32,7 @@ public class GankFragment extends BaseFragment {
     @BindView(R.id.viewpager)
     ViewPager viewpager;
 
-    private static final String[] items = {"all", "Android", "iOS", "前端", "拓展"};
+    private static final String[] items = {"all", "Android", "iOS", "前端", "拓展资源"};
 
     public static GankFragment newInstance() {
         GankFragment fragment = new GankFragment();
@@ -82,7 +83,7 @@ public class GankFragment extends BaseFragment {
             public View getBottomLine() {
                 View view = new View(mContext);
                 view.setBackgroundColor(Color.RED);
-                view.setLayoutParams(new ViewGroup.LayoutParams(50, 8));
+                view.setLayoutParams(new ViewGroup.LayoutParams(100, 8));
                 return view;
             }
 
@@ -108,7 +109,7 @@ public class GankFragment extends BaseFragment {
                     case 0:
                         return GankAllFragment.newInstance();
                     default:
-                        return DefaultFragment.newInstance(items[position]);
+                        return GankOtherFragment.newInstance(items[position]);
                 }
             }
 

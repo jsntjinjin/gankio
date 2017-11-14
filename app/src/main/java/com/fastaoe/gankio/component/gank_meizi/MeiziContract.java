@@ -1,4 +1,4 @@
-package com.fastaoe.gankio.component.gank_all;
+package com.fastaoe.gankio.component.gank_meizi;
 
 import com.fastaoe.baselibrary.basemvp.IBaseView;
 import com.fastaoe.gankio.model.beans.AllContent;
@@ -6,13 +6,13 @@ import com.fastaoe.gankio.model.beans.AllContent;
 import java.util.List;
 
 /**
- * Created by jinjin on 17/11/9.
+ * Created by jinjin on 17/11/14.
  * description:
  */
 
-public interface GankAllContract {
-
+public class MeiziContract {
     public interface View extends IBaseView {
+        void refreshContent();
 
         void stopRefresh();
 
@@ -26,5 +26,4 @@ public interface GankAllContract {
 
         List<AllContent.ResultsBean> getList();
     }
-
 }

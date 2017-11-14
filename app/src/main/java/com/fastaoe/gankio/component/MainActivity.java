@@ -86,7 +86,7 @@ public class MainActivity extends MyBaseActivity {
                 helper.switchFragment(gankFragment);
                 break;
             case "妹纸":
-                if (meiziFragment == null) meiziFragment = MeiziFragment.newInstance(itemTitle);
+                if (meiziFragment == null) meiziFragment = MeiziFragment.newInstance();
                 helper.switchFragment(meiziFragment);
                 break;
             case "关于我们":
