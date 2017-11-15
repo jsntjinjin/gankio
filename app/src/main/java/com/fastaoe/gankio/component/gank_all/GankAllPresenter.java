@@ -4,6 +4,7 @@ import com.fastaoe.baselibrary.basemvp.BasePresenter;
 import com.fastaoe.gankio.model.DataModel;
 import com.fastaoe.gankio.model.Token;
 import com.fastaoe.gankio.model.beans.AllContent;
+import com.fastaoe.gankio.utils.DateUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,8 +57,8 @@ public class GankAllPresenter extends BasePresenter<GankAllContract.View> implem
                         .execute(),
                 this::mergeRest2MeiziDesc)
                 .subscribeOn(Schedulers.io())
-                .map(o -> ((AllContent)o).getResults())
-                .flatMap(o -> Observable.fromIterable((List<AllContent.ResultsBean>)o))
+                .map(o -> ((AllContent) o).getResults())
+                .flatMap(o -> Observable.fromIterable((List<AllContent.ResultsBean>) o))
                 .toSortedList((o, t1) ->
                         ((AllContent.ResultsBean) t1).getPublishedAt().compareTo(((AllContent.ResultsBean) o).getPublishedAt()))
                 .observeOn(AndroidSchedulers.mainThread())
@@ -106,7 +107,7 @@ public class GankAllPresenter extends BasePresenter<GankAllContract.View> implem
             if (video.getPublishedAt() == null) {
                 video.setPublishedAt(video.getCreatedAt());
             }
-            if (isTheSameDay(publishedAt, video.getPublishedAt())) {
+            if (DateUtil.isTheSameDay(publishedAt, video.getPublishedAt())) {
                 videoDesc = video.getDesc();
                 lastPosition = i;
                 break;
@@ -115,14 +116,4 @@ public class GankAllPresenter extends BasePresenter<GankAllContract.View> implem
         return videoDesc;
     }
 
-    public static boolean isTheSameDay(Date one, Date another) {
-        Calendar _one = Calendar.getInstance();
-        _one.setTime(one);
-        Calendar _another = Calendar.getInstance();
-        _another.setTime(another);
-        int oneDay = _one.get(Calendar.DAY_OF_YEAR);
-        int anotherDay = _another.get(Calendar.DAY_OF_YEAR);
-
-        return oneDay == anotherDay;
-    }
 }

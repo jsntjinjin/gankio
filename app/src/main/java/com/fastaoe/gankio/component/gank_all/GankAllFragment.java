@@ -2,6 +2,7 @@ package com.fastaoe.gankio.component.gank_all;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -12,6 +13,7 @@ import com.fastaoe.gankio.model.beans.AllContent;
 import com.fastaoe.gankio.widget.recycler.DefaultLoadCreator;
 import com.fastaoe.gankio.widget.recycler.DefaultRefreshCreator;
 import com.fastaoe.gankio.widget.recycler.GridLayoutItemDecoration;
+import com.fastaoe.gankio.widget.recycler.LinearLayoutItemDecoration;
 import com.fastaoe.gankio.widget.recycler.base.RecyclerAdapter;
 import com.fastaoe.gankio.widget.recycler.base.ViewHolder;
 import com.fastaoe.gankio.widget.recycler.refresh.LoadRefreshRecyclerView;
@@ -50,8 +52,8 @@ public class GankAllFragment extends BaseFragment implements GankAllContract.Vie
 
     private void initRecycleView() {
         loadRecycle.setLayoutManager(new GridLayoutManager(mContext, 2));
-        //        loadRecycle.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        loadRecycle.addItemDecoration(new GridLayoutItemDecoration(mContext, R.drawable.shape_item_dirver_01));
+//        loadRecycle.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        loadRecycle.addItemDecoration(new LinearLayoutItemDecoration(mContext, R.drawable.shape_item_dirver_01));
         loadRecycle.addRefreshViewCreator(new DefaultRefreshCreator());
         loadRecycle.addLoadViewCreator(new DefaultLoadCreator());
         //        loadRecycle.addEmptyView(new View(mContext));

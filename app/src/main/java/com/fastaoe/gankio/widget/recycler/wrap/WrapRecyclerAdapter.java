@@ -32,7 +32,8 @@ public class WrapRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (headers.indexOfKey(viewType) >= 0) {
             return createHeaderOrFooterViewHolder(headers.get(viewType));
-        } else if (footers.indexOfKey(viewType) >= 0) {
+        }
+        if (footers.indexOfKey(viewType) >= 0) {
             return createHeaderOrFooterViewHolder(footers.get(viewType));
         }
 

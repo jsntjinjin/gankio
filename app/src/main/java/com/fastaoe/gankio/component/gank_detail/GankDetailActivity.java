@@ -1,5 +1,9 @@
 package com.fastaoe.gankio.component.gank_detail;
 
+import android.content.Context;
+import android.content.Intent;
+
+import com.fastaoe.gankio.R;
 import com.fastaoe.gankio.base.MyBaseActivity;
 
 /**
@@ -8,9 +12,14 @@ import com.fastaoe.gankio.base.MyBaseActivity;
  */
 
 public class GankDetailActivity extends MyBaseActivity {
+
+    public static void newInstance(Context context) {
+        context.startActivity(new Intent(context, GankDetailActivity.class));
+    }
+
     @Override
     protected int getContentView() {
-        return 0;
+        return R.layout.activity_gank_detail;
     }
 
     @Override
