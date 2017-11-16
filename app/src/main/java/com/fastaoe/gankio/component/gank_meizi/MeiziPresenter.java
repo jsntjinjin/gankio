@@ -3,7 +3,7 @@ package com.fastaoe.gankio.component.gank_meizi;
 import com.fastaoe.baselibrary.basemvp.BasePresenter;
 import com.fastaoe.gankio.model.DataModel;
 import com.fastaoe.gankio.model.Token;
-import com.fastaoe.gankio.model.beans.AllContent;
+import com.fastaoe.gankio.model.beans.RandomData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,40 +18,30 @@ import io.reactivex.disposables.Disposable;
 
 public class MeiziPresenter extends BasePresenter<MeiziContract.View> implements MeiziContract.Presenter {
 
-    private List<AllContent.ResultsBean> meiziResults;
-
-    private int page = 1;
+    private List<RandomData.ResultsBean> meiziResults;
 
     @Override
-    public void refreshContent(boolean isLoadMore) {
+    public void refreshContent() {
         if (!isViewAttached()) {
             return;
         }
 
-        if (!isLoadMore) {
-            page = 1;
-        } else {
-            page++;
-        }
-
-        getView().refreshContent();
+        getView().showLoading();
 
         //noinspection unchecked
-        DataModel.request(Token.ALL_CONTENT)
-                .params("福利", "10", String.valueOf(page))
+        DataModel.request(Token.RANDOM_MEIZI)
                 .execute()
-                .subscribe(new Observer<AllContent>() {
+                .subscribe(new Observer<RandomData>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(AllContent value) {
-                        if (!isLoadMore) {
-                            meiziResults.clear();
-                        }
+                    public void onNext(RandomData value) {
+                        meiziResults.clear();
                         meiziResults.addAll(value.getResults());
+                        getView().refreshContent();
                     }
 
                     @Override
@@ -61,17 +51,13 @@ public class MeiziPresenter extends BasePresenter<MeiziContract.View> implements
 
                     @Override
                     public void onComplete() {
-                        if (!isLoadMore) {
-                            getView().stopRefresh();
-                        } else {
-                            getView().stopLoadMore();
-                        }
+                        getView().hideLoading();
                     }
                 });
     }
 
     @Override
-    public List<AllContent.ResultsBean> getList() {
+    public List<RandomData.ResultsBean> getList() {
         if (meiziResults == null) {
             meiziResults = new ArrayList<>();
         }

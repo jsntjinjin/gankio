@@ -2,6 +2,7 @@ package com.fastaoe.gankio.component.gank_meizi;
 
 import com.fastaoe.baselibrary.basemvp.IBaseView;
 import com.fastaoe.gankio.model.beans.AllContent;
+import com.fastaoe.gankio.model.beans.RandomData;
 
 import java.util.List;
 
@@ -22,8 +23,8 @@ public class MeiziContract {
 
     public interface Presenter {
 
-        void refreshContent(boolean isLoadMore);
+        void refreshContent();
 
-        List<AllContent.ResultsBean> getList();
+        List<RandomData.ResultsBean> getList();
     }
 }

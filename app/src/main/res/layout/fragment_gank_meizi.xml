@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.SwipeRefreshLayout
-    android:id="@+id/swipe_refresh_layout"
+    android:id="@+id/refresh_view"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.fastaoe.gankio.widget.recycler.refresh.LoadRefreshRecyclerView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/load_recycle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"
+        android:overScrollMode="never"/>
 
 </android.support.v4.widget.SwipeRefreshLayout>

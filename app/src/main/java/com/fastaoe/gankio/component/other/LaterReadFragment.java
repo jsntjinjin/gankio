@@ -1,4 +1,4 @@
-package com.fastaoe.gankio.component;
+package com.fastaoe.gankio.component.other;
 
 import com.fastaoe.baselibrary.basemvp.BaseFragment;
 
