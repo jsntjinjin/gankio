@@ -1,21 +1,21 @@
 package com.fastaoe.gankio.component.gank_meizi;
 
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.ViewGroup;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.fastaoe.baselibrary.basemvp.BaseFragment;
 import com.fastaoe.gankio.R;
 import com.fastaoe.gankio.model.beans.RandomData;
-import com.fastaoe.gankio.utils.DensityUtil;
 import com.fastaoe.gankio.widget.recycler.GridLayoutItemDecoration;
 import com.fastaoe.gankio.widget.recycler.base.RecyclerAdapter;
 import com.fastaoe.gankio.widget.recycler.base.ViewHolder;
+import com.fastaoe.gankio.widget.recycler.wrap.WrapRecyclerView;
 
 import butterknife.BindView;
 
@@ -27,12 +27,11 @@ import butterknife.BindView;
 public class MeiziFragment extends BaseFragment implements MeiziContract.View {
 
     @BindView(R.id.load_recycle)
-    RecyclerView loadRecycle;
-    @BindView(R.id.refresh_view)
-    SwipeRefreshLayout refreshLayout;
+    WrapRecyclerView loadRecycle;
 
     private MeiziPresenter meiziPresenter;
     private RecyclerView.Adapter adapter;
+    private TextView saveAll;
 
     public static MeiziFragment newInstance() {
         MeiziFragment fragment = new MeiziFragment();
@@ -48,20 +47,25 @@ public class MeiziFragment extends BaseFragment implements MeiziContract.View {
     protected void initView() {
         meiziPresenter = new MeiziPresenter();
         meiziPresenter.attachView(this);
-        //        ViewGroup.LayoutParams layoutParams = loadRecycle.getLayoutParams();
-        //        layoutParams.width = DensityUtil.getScreenWidth(mContext);
-        //        layoutParams.height = DensityUtil.getScreenWidth(mContext);
-        //        loadRecycle.setLayoutParams(layoutParams);
-        initRefreshView();
         initRecycleView();
+        initFooterView();
     }
 
-    private void initRefreshView() {
-        refreshLayout.setOnRefreshListener(() -> meiziPresenter.refreshContent());
+    private void initFooterView() {
+        View footer = LayoutInflater.from(mContext).inflate(R.layout.item_gank_meizi_footer, loadRecycle, false);
+
+        footer.findViewById(R.id.tv_refresh).setOnClickListener(view -> meiziPresenter.refreshContent());
+        saveAll = footer.findViewById(R.id.tv_save_all);
+        saveAll.setOnClickListener(view -> {
+            // 全部保存
+            meiziPresenter.saveMeizi(meiziPresenter.getList());
+        });
+
+        loadRecycle.addFooterView(footer);
     }
 
     private void initRecycleView() {
-        loadRecycle.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        loadRecycle.setLayoutManager(new GridLayoutManager(mContext, 3));
         loadRecycle.addItemDecoration(new GridLayoutItemDecoration(mContext, R.drawable.shape_item_dirver_02));
         adapter = initAdapter();
         loadRecycle.setAdapter(adapter);
@@ -73,7 +77,7 @@ public class MeiziFragment extends BaseFragment implements MeiziContract.View {
             @Override
             protected void convert(ViewHolder holder, RandomData.ResultsBean data, int position) {
                 ImageView view = holder.getView(R.id.image_view);
-                Glide.with(mContext).load(data.getUrl()).apply(new RequestOptions().fitCenter()).into(view);
+                Glide.with(mContext).load(data.getUrl()).apply(new RequestOptions().centerCrop()).into(view);
             }
         };
 
@@ -100,12 +104,7 @@ public class MeiziFragment extends BaseFragment implements MeiziContract.View {
     }
 
     @Override
-    public void stopRefresh() {
-
-    }
-
-    @Override
-    public void stopLoadMore() {
-
+    public void saveTextChanged(String msg) {
+        saveAll.setText(msg);
     }
 }
