@@ -82,7 +82,9 @@ public class MeiziPresenter extends BasePresenter<MeiziContract.View> implements
         int length = list.size();
         Observable.create((ObservableOnSubscribe<List<RandomData.ResultsBean>>) e -> e.onNext(list))
                 .flatMap(resultsBeans -> Observable.fromIterable(resultsBeans))
-                .map(resultsBean -> Glide.with(getView().getContext()).load(resultsBean.getUrl()).downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
+                .map(resultsBean ->
+                        Glide.with(getView().getContext()).load(resultsBean.getUrl())
+                                .downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(Schedulers.io())
                 .map(fileFutureTarget -> fileFutureTarget.get())
@@ -112,7 +114,7 @@ public class MeiziPresenter extends BasePresenter<MeiziContract.View> implements
 
                     @Override
                     public void onError(Throwable e) {
-                        LogUtil.d("saveMeizi", e.toString());
+                        LogUtil.e("saveMeizi", e.toString());
                     }
 
                     @Override
