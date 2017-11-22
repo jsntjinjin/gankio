@@ -28,4 +28,6 @@ public class Constants {
         }
         return "http://gank.io/api/";
     }
+
+    public static final int PERMISSION_READ_WRITE_STORAGE = 0x0001;
 }

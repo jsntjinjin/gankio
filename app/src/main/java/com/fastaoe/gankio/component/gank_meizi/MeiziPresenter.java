@@ -1,52 +1,28 @@
 package com.fastaoe.gankio.component.gank_meizi;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestManager;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.FutureTarget;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
-import com.bumptech.glide.request.transition.Transition;
 import com.fastaoe.baselibrary.basemvp.BasePresenter;
 import com.fastaoe.gankio.model.DataModel;
 import com.fastaoe.gankio.model.Token;
 import com.fastaoe.gankio.model.beans.RandomData;
+import com.fastaoe.gankio.utils.LogUtil;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
-import java.nio.file.Files;
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ExecutionException;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -102,53 +78,48 @@ public class MeiziPresenter extends BasePresenter<MeiziContract.View> implements
 
     @Override
     public void saveMeizi(List<RandomData.ResultsBean> list) {
+        getView().saveMeiziStart();
         int length = list.size();
-        int position = 0;
-        //        Observable.create((ObservableOnSubscribe<String>) e -> {
-        //            for (RandomData.ResultsBean resultsBean : list) {
-        //                e.onNext(resultsBean.getUrl());
-        //            }
-        //        })
-        //                .subscribeOn(AndroidSchedulers.mainThread())
-        //                .observeOn(AndroidSchedulers.mainThread())
-        //                .map(new Function<String, Integer>() {
-        //                    @Override
-        //                    public Integer apply(String url) throws Exception {
-        //                        if (saveImage(url, getView().getContext())) {
-        //                            return 1;
-        //                        }
-        //                        return 0;
-        //                    }
-        //                })
-        //                .observeOn(AndroidSchedulers.mainThread())
-        //                .subscribe(s -> {
-        //                    position = s + position;
-        //                    getView().showToast("已存储（" + position + "/" + length + "）");
-        //                });
-        for (RandomData.ResultsBean resultsBean : list) {
-            if (saveImage(resultsBean.getUrl(), getView().getContext())) {
-                position++;
-            }
-            getView().saveTextChanged("已存储（" + position + "/" + length + "）");
-        }
-    }
+        Observable.create((ObservableOnSubscribe<List<RandomData.ResultsBean>>) e -> e.onNext(list))
+                .flatMap(resultsBeans -> Observable.fromIterable(resultsBeans))
+                .map(resultsBean -> Glide.with(getView().getContext()).load(resultsBean.getUrl()).downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.io())
+                .map(fileFutureTarget -> fileFutureTarget.get())
+                .map(file -> {
+                    File pictureFolder = Environment.getExternalStorageDirectory().getAbsoluteFile();
+                    File appDir = new File(pictureFolder, "fastaoe");
+                    if (!appDir.exists()) {
+                        appDir.mkdirs();
+                    }
+                    String fileName = System.currentTimeMillis() + ".jpg";
+                    File destFile = new File(appDir, fileName);
+                    copyFileUsingFileChannels(file, destFile);
+                    return true;
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-    private boolean saveImage(String url, Context context) {
-        try {
-            FutureTarget<File> fileFutureTarget = Glide.with(context).load(url).downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL);
-            File file = fileFutureTarget.get();
-            File pictureFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsoluteFile();
-            File appDir = new File(pictureFolder, "fastaoe");
-            if (!appDir.exists()) {
-                appDir.mkdirs();
-            }
-            String fileName = System.currentTimeMillis() + ".jpg";
-            File destFile = new File(appDir, fileName);
-            copyFileUsingFileChannels(file, destFile);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+                    }
+
+                    @Override
+                    public void onNext(Boolean value) {
+                        getView().saveTextChanged("已存储（" + getView().setSavePosition() + "/" + length + "）");
+                        getView().saveMeiziEnd();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtil.d("saveMeizi", e.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     private static void copyFileUsingFileChannels(File source, File dest) throws IOException {

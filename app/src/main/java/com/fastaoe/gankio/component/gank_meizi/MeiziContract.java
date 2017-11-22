@@ -15,6 +15,12 @@ public class MeiziContract {
         void refreshContent();
 
         void saveTextChanged(String msg);
+
+        void saveMeiziStart();
+
+        void saveMeiziEnd();
+
+        int setSavePosition();
     }
 
     public interface Presenter {
