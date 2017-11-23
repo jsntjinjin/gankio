@@ -3,6 +3,8 @@ package com.fastaoe.gankio.component.gank_other;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.TextView;
 
 import com.fastaoe.baselibrary.basemvp.BaseFragment;
 import com.fastaoe.gankio.R;
@@ -54,7 +56,6 @@ public class GankOtherFragment extends BaseFragment implements GankOtherContract
 
     private void initRecycleView() {
         loadRecycle.setLayoutManager(new LinearLayoutManager(mContext));
-        //        loadRecycle.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         loadRecycle.addItemDecoration(new LinearLayoutItemDecoration(mContext, R.drawable.shape_item_dirver_01));
         loadRecycle.addRefreshViewCreator(new DefaultRefreshCreator());
         loadRecycle.addLoadViewCreator(new DefaultLoadCreator());
@@ -69,7 +70,8 @@ public class GankOtherFragment extends BaseFragment implements GankOtherContract
     }
 
     private RecyclerView.Adapter initAdapter() {
-        RecyclerAdapter<AllContent.ResultsBean> adapter = new RecyclerAdapter<AllContent.ResultsBean>(mContext, gankOtherPresenter.getList(), R.layout.item_gank_other) {
+        RecyclerAdapter<AllContent.ResultsBean> adapter
+                = new RecyclerAdapter<AllContent.ResultsBean>(mContext, gankOtherPresenter.getList(), R.layout.item_gank_other) {
             @Override
             protected void convert(ViewHolder holder, AllContent.ResultsBean data, int position) {
                 holder.setText(R.id.tv_title, data.getDesc())
@@ -77,15 +79,30 @@ public class GankOtherFragment extends BaseFragment implements GankOtherContract
                         .setText(R.id.tv_author, data.getWho());
                 holder.getView(R.id.iv_collection).setOnClickListener(view -> {
                     // TODO: 17/11/14 收藏功能
+                    if (gankOtherPresenter.setCollectionOrNot(position)) {
+                        // 收藏成功
+                        ((TextView) holder.getView(R.id.tv_collection)).setText("已收藏");
+                    } else {
+                        // 收藏失败
+                        ((TextView) holder.getView(R.id.tv_collection)).setText("收藏");
+                    }
                 });
                 holder.getView(R.id.iv_later_read).setOnClickListener(view -> {
                     // TODO: 17/11/14 稍后阅读功能
+                    if (gankOtherPresenter.setLaterReaderOrNot(position)) {
+                        // 设置稍后阅读
+                        ((TextView) holder.getView(R.id.tv_later_read)).setText("已稍后阅读");
+                    } else {
+                        // 取消稍后阅读
+                        ((TextView) holder.getView(R.id.tv_later_read)).setText("稍后阅读");
+                    }
                 });
             }
         };
 
         adapter.setOnItemClickListener(position -> {
             // TODO: 17/11/14 跳转单个文章
+            gankOtherPresenter.setReaded(position);
         });
         return adapter;
     }

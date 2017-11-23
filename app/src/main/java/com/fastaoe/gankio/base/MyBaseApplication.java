@@ -27,7 +27,7 @@ public class MyBaseApplication extends Application {
         // 初始化数据库
         DataBaseManager.getInstance().init(this);
 
-        // 调试数据库和网络
+        // 调试数据库和网络 http://www.jianshu.com/p/03da9f91f41f
         if (Constants.DEBUG) {
             Stetho.initializeWithDefaults(this);
         }

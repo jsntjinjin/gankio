@@ -13,6 +13,7 @@ public class DataBaseManager {
 
     private DaoSession daoSession;
     private MeiziImageProfileDao meiziImageProfileDao;
+    private GankItemProfileDao gankItemProfileDao;
 
     private final static class Holder {
         private final static DataBaseManager INSTANCE = new DataBaseManager();
@@ -31,9 +32,14 @@ public class DataBaseManager {
         Database database = helper.getWritableDb();
         daoSession = new DaoMaster(database).newSession();
         meiziImageProfileDao = daoSession.getMeiziImageProfileDao();
+        gankItemProfileDao = daoSession.getGankItemProfileDao();
     }
 
     public MeiziImageProfileDao getMeiziImageProfileDao() {
         return meiziImageProfileDao;
+    }
+
+    public GankItemProfileDao getGankItemProfileDao() {
+        return gankItemProfileDao;
     }
 }

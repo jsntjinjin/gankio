@@ -24,5 +24,11 @@ public interface GankOtherContract {
         void refreshContent(boolean isLoadMore, String item);
 
         List<AllContent.ResultsBean> getList();
+
+        boolean setLaterReaderOrNot(int position);
+
+        boolean setCollectionOrNot(int position);
+
+        void setReaded(int position);
     }
 }
