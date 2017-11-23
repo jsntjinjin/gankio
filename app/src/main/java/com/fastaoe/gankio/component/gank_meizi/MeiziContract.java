@@ -12,7 +12,7 @@ import java.util.List;
 
 public class MeiziContract {
     public interface View extends IBaseView {
-        void refreshContent();
+        void refreshContent(int savedSize);
 
         void saveTextChanged(String msg);
 

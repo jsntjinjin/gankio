@@ -59,6 +59,17 @@ public class RandomData {
         private String who;
         private List<String> images;
 
+        private boolean saved;
+
+        public boolean isSaved() {
+            return saved;
+        }
+
+        public ResultsBean setSaved(boolean saved) {
+            this.saved = saved;
+            return this;
+        }
+
         public String get_id() {
             return _id;
         }

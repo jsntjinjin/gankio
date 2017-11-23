@@ -2,12 +2,15 @@ package com.fastaoe.gankio.base;
 
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
+import com.fastaoe.gankio.model.database.DataBaseManager;
+
 /**
  * Created by jinjin on 17/11/6.
  * description:
  */
 
-public class MyBaseApplication extends Application{
+public class MyBaseApplication extends Application {
 
     public static Application sAppContext;
 
@@ -20,6 +23,15 @@ public class MyBaseApplication extends Application{
         initConfig();
 
         initHttpConfig();
+
+        // 初始化数据库
+        DataBaseManager.getInstance().init(this);
+
+        // 调试数据库和网络
+        if (Constants.DEBUG) {
+            Stetho.initializeWithDefaults(this);
+        }
+
     }
 
     private void initHttpConfig() {

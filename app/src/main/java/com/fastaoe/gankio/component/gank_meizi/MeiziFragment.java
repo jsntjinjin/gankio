@@ -137,10 +137,16 @@ public class MeiziFragment extends BaseFragment implements MeiziContract.View {
     }
 
     @Override
-    public void refreshContent() {
+    public void refreshContent(int savedSize) {
         adapter.notifyDataSetChanged();
         saveAll.setClickable(true);
-        saveAll.setText("存储到本地");
+        if (savedSize > 0) {
+            savePosition = savedSize;
+            saveAll.setText("继续保存（" + savedSize + "/" + meiziPresenter.getList().size() + "）");
+        } else {
+            savePosition = 0;
+            saveAll.setText("存储到本地");
+        }
     }
 
     @Override
@@ -150,7 +156,6 @@ public class MeiziFragment extends BaseFragment implements MeiziContract.View {
 
     @Override
     public void saveMeiziStart() {
-        savePosition = 0;
         refreshAll.setClickable(false);
         saveAll.setClickable(false);
     }
