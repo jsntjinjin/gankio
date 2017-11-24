@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.facebook.stetho.Stetho;
 import com.fastaoe.gankio.model.database.DataBaseManager;
+import com.joanzapata.iconify.Iconify;
+import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
 /**
  * Created by jinjin on 17/11/6.
@@ -39,6 +41,7 @@ public class MyBaseApplication extends Application {
     }
 
     private void initConfig() {
-
+        // 初始化icons
+        Iconify.with(new FontAwesomeModule());
     }
 }

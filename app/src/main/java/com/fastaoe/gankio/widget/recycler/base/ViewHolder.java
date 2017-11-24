@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.joanzapata.iconify.widget.IconTextView;
+
 /**
  * Created by jinjin on 2017/6/11.
  */
@@ -31,6 +33,15 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     public ViewHolder setText(int viewId, CharSequence text) {
         TextView textView = getView(viewId);
         textView.setText(text);
+        return this;
+    }
+
+    public ViewHolder setIcon(int viewId, CharSequence text, int colorResourceId) {
+        IconTextView iconTextView = getView(viewId);
+        iconTextView.setText(text);
+        if (colorResourceId != 0) {
+            iconTextView.setTextColor(colorResourceId);
+        }
         return this;
     }
 

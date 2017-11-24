@@ -15,6 +15,7 @@ import com.fastaoe.gankio.widget.recycler.LinearLayoutItemDecoration;
 import com.fastaoe.gankio.widget.recycler.base.RecyclerAdapter;
 import com.fastaoe.gankio.widget.recycler.base.ViewHolder;
 import com.fastaoe.gankio.widget.recycler.refresh.LoadRefreshRecyclerView;
+import com.joanzapata.iconify.widget.IconTextView;
 
 import java.text.SimpleDateFormat;
 
@@ -76,34 +77,40 @@ public class GankOtherFragment extends BaseFragment implements GankOtherContract
             protected void convert(ViewHolder holder, AllContent.ResultsBean data, int position) {
                 holder.setText(R.id.tv_title, data.getDesc())
                         .setText(R.id.tv_create_time, new SimpleDateFormat("yyyy-MM-dd").format(data.getPublishedAt()))
-                        .setText(R.id.tv_author, data.getWho());
-                holder.getView(R.id.iv_collection).setOnClickListener(view -> {
-                    // TODO: 17/11/14 收藏功能
-                    if (gankOtherPresenter.setCollectionOrNot(position)) {
-                        // 收藏成功
-                        ((TextView) holder.getView(R.id.tv_collection)).setText("已收藏");
-                    } else {
-                        // 收藏失败
-                        ((TextView) holder.getView(R.id.tv_collection)).setText("收藏");
-                    }
-                });
-                holder.getView(R.id.iv_later_read).setOnClickListener(view -> {
-                    // TODO: 17/11/14 稍后阅读功能
-                    if (gankOtherPresenter.setLaterReaderOrNot(position)) {
+                        .setText(R.id.tv_author, data.getWho())
+                        // 设置收藏
+                        .setIcon(R.id.itv_collection,
+                                data.isCollectioned() ? "{fa-heart}" : "{fa-heart-o}",
+                                data.isCollectioned() ? getResources().getColor(R.color.text_orange)
+                                        : getResources().getColor(R.color.text_grey))
                         // 设置稍后阅读
-                        ((TextView) holder.getView(R.id.tv_later_read)).setText("已稍后阅读");
-                    } else {
-                        // 取消稍后阅读
-                        ((TextView) holder.getView(R.id.tv_later_read)).setText("稍后阅读");
-                    }
+                        .setIcon(R.id.itv_later_read,
+                                "{fa-clock-o}",
+                                data.isLaterReadered() ? getResources().getColor(R.color.text_orange)
+                                        : getResources().getColor(R.color.text_grey))
+                        .setOnItemClickListener(view -> {
+                            // TODO: 17/11/14 添加跳转gankDetailActivity
+                            gankOtherPresenter.setReaded(position);
+                        });
+                holder.getView(R.id.itv_collection).setOnClickListener(view -> {
+                    // true:收藏成功 false:取消收藏
+                    boolean collectioned = gankOtherPresenter.setCollectionOrNot(position);
+                    holder.setIcon(R.id.itv_collection,
+                            collectioned ? "{fa-heart}" : "{fa-heart-o}",
+                            collectioned ? getResources().getColor(R.color.text_orange)
+                                    : getResources().getColor(R.color.text_grey));
+
+                });
+                holder.getView(R.id.itv_later_read).setOnClickListener(view -> {
+                    // true:设置稍后阅读 false:取消稍后阅读
+                    boolean laterReadered = gankOtherPresenter.setLaterReaderOrNot(position);
+                    holder.setIcon(R.id.itv_later_read,
+                            "{fa-clock-o}",
+                            laterReadered ? getResources().getColor(R.color.text_orange)
+                                    : getResources().getColor(R.color.text_grey));
                 });
             }
         };
-
-        adapter.setOnItemClickListener(position -> {
-            // TODO: 17/11/14 跳转单个文章
-            gankOtherPresenter.setReaded(position);
-        });
         return adapter;
     }
 

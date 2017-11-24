@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:id="@+id/rl_root_item"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/rl_root_item"
-    android:paddingBottom="10dp"
     android:background="@drawable/item_gank_all_bg"
+    android:paddingBottom="10dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingTop="10dp">
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="这是title"
-        android:textColor="#000000"
+        android:textColor="@color/text_caption"
         android:textSize="18sp"/>
 
     <TextView
@@ -35,46 +35,52 @@
         android:layout_marginTop="3dp"
         android:text="2017-11-14"/>
 
-    <ImageView
-        android:id="@+id/iv_collection"
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/itv_collection"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_below="@id/tv_author"
         android:layout_marginTop="5dp"
-        android:src="@mipmap/ic_launcher"/>
+        android:gravity="center"
+        android:text="{fa-heart}"
+        android:textColor="@color/text_grey"
+        android:textSize="14sp"/>
 
     <TextView
         android:id="@+id/tv_collection"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/iv_collection"
-        android:layout_alignTop="@id/iv_collection"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_toRightOf="@id/iv_collection"
+        android:layout_height="30dp"
+        android:layout_alignBottom="@id/itv_collection"
+        android:layout_alignTop="@id/itv_collection"
+        android:layout_toRightOf="@id/itv_collection"
         android:gravity="center"
-        android:text="已收藏"/>
+        android:text="收藏"
+        android:textColor="@color/text_grey"
+        android:textSize="14sp"/>
 
-    <ImageView
-        android:id="@+id/iv_later_read"
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/itv_later_read"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_below="@id/tv_author"
-        android:layout_marginRight="10dp"
         android:layout_marginTop="5dp"
         android:layout_toLeftOf="@id/tv_later_read"
-        android:src="@mipmap/ic_launcher"/>
+        android:gravity="center"
+        android:text="{fa-heart}"
+        android:textColor="@color/text_grey"
+        android:textSize="14sp"/>
 
     <TextView
         android:id="@+id/tv_later_read"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/iv_collection"
+        android:layout_height="30dp"
+        android:text="稍后阅读"
+        android:layout_alignBottom="@id/itv_collection"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/iv_collection"
-        android:layout_marginTop="5dp"
+        android:layout_alignTop="@id/itv_collection"
         android:gravity="center"
-        android:text="稍后阅读"/>
+        android:textColor="@color/text_grey"
+        android:textSize="14sp"/>
 
 
 </RelativeLayout>

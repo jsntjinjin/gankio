@@ -59,6 +59,9 @@ public class AllContent {
         private String who;
         private List<String> images;
 
+        private boolean collectioned;// 查询数据库 本地字段
+        private boolean laterReadered;// 查询数据库 本地字段
+
         public String get_id() {
             return _id;
         }
@@ -137,6 +140,24 @@ public class AllContent {
 
         public void setImages(List<String> images) {
             this.images = images;
+        }
+
+        public boolean isCollectioned() {
+            return collectioned;
+        }
+
+        public ResultsBean setCollectioned(boolean collectioned) {
+            this.collectioned = collectioned;
+            return this;
+        }
+
+        public boolean isLaterReadered() {
+            return laterReadered;
+        }
+
+        public ResultsBean setLaterReadered(boolean laterReadered) {
+            this.laterReadered = laterReadered;
+            return this;
         }
     }
 }
