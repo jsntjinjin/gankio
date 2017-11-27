@@ -11,7 +11,9 @@ import com.fastaoe.gankio.R;
 import com.fastaoe.gankio.base.MyBaseActivity;
 import com.fastaoe.gankio.component.gank.GankFragment;
 import com.fastaoe.gankio.component.gank_meizi.MeiziFragment;
+import com.fastaoe.gankio.component.gank_user.GankCollectionActivity;
 import com.fastaoe.gankio.component.other.AboutFragment;
+import com.fastaoe.gankio.component.other.MineFragment;
 
 import butterknife.BindView;
 
@@ -32,6 +34,7 @@ public class MainActivity extends MyBaseActivity {
     private GankFragment gankFragment;
     private MeiziFragment meiziFragment;
     private AboutFragment aboutFragment;
+    private MineFragment mineFragment;
 
     @Override
     protected int getContentView() {
@@ -88,6 +91,10 @@ public class MainActivity extends MyBaseActivity {
             case "妹纸":
                 if (meiziFragment == null) meiziFragment = MeiziFragment.newInstance();
                 helper.switchFragment(meiziFragment);
+                break;
+            case "操作记录":
+                if (mineFragment == null) mineFragment = MineFragment.newInstance();
+                helper.switchFragment(mineFragment);
                 break;
             case "关于我们":
                 if (aboutFragment == null) aboutFragment = AboutFragment.newInstance(itemTitle);

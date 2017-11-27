@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">gankio</string>
+
+    <string name="mine_gank_collection">收藏</string>
+    <string name="mine_gank_later_reader">稍后阅读</string>
+    <string name="mine_gank_readed">浏览记录</string>
 </resources>

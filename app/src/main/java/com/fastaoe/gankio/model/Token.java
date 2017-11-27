@@ -16,4 +16,6 @@ public class Token {
     public static final String ALL_CONTENT = PACKAGE_NAME + "AllContentModel";
 
     public static final String RANDOM_MEIZI = PACKAGE_NAME + "RandomMeiziModel";
+
+    public static final String GANK_ITEM_PROFILE = PACKAGE_NAME + "GankItemProfileModel";
 }

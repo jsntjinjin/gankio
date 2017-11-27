@@ -3,8 +3,6 @@ package com.fastaoe.gankio.component.gank_other;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.TextView;
 
 import com.fastaoe.baselibrary.basemvp.BaseFragment;
 import com.fastaoe.gankio.R;
@@ -15,7 +13,6 @@ import com.fastaoe.gankio.widget.recycler.LinearLayoutItemDecoration;
 import com.fastaoe.gankio.widget.recycler.base.RecyclerAdapter;
 import com.fastaoe.gankio.widget.recycler.base.ViewHolder;
 import com.fastaoe.gankio.widget.recycler.refresh.LoadRefreshRecyclerView;
-import com.joanzapata.iconify.widget.IconTextView;
 
 import java.text.SimpleDateFormat;
 

@@ -158,9 +158,9 @@ public class WrapRecyclerView extends RecyclerView {
      * Adapter数据改变的方法
      */
     private void dataChanged() {
-        if (mAdapter.getItemCount() == 0) {
-            // 没有数据
-            if (mEmptyView != null) {
+        if (mEmptyView != null) {
+            if (mAdapter.getItemCount() == 0) {
+                // 没有数据
                 mEmptyView.setVisibility(VISIBLE);
             } else {
                 mEmptyView.setVisibility(GONE);

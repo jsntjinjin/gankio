@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.fastaoe.gankio.widget.CommonTextItem
+        android:id="@+id/cti_gank_collection"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="10dp"
+        app:ctiLeftImg="@drawable/icon_collection"
+        app:ctiLeftText="@string/mine_gank_collection"
+        app:ctiRightImg="@drawable/icon_row_enter"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/text_grey"/>
+
+    <com.fastaoe.gankio.widget.CommonTextItem
+        android:id="@+id/cti_gank_later_reader"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        app:ctiLeftImg="@drawable/icon_later_reader"
+        app:ctiLeftText="@string/mine_gank_later_reader"
+        app:ctiRightImg="@drawable/icon_row_enter"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/text_grey"/>
+
+    <com.fastaoe.gankio.widget.CommonTextItem
+        android:id="@+id/cti_gank_readed"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        app:ctiLeftImg="@drawable/icon_readed"
+        app:ctiLeftText="@string/mine_gank_readed"
+        app:ctiRightImg="@drawable/icon_row_enter"/>
+
+</LinearLayout>

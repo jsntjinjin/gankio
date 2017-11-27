@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CommonTextItem">
+        <attr name="ctiLeftImg" format="reference"/>
+        <attr name="ctiRightImg" format="reference"/>
+        <attr name="ctiLeftText" format="reference|string"/>
+        <attr name="ctiRightText" format="reference|string"/>
+        <attr name="ctiLeftTextMargin" format="dimension"/>
+        <attr name="ctiRightTextColor" format="color"/>
+        <attr name="ctiRightTextSize" format="dimension"/>
+        <attr name="ctiRightImgMarin" format="dimension"/>
+    </declare-styleable>
+</resources>

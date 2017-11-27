@@ -7,8 +7,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
-        android:allowBackup="true"
         android:name=".base.MyBaseApplication"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -25,6 +25,16 @@
         <activity
             android:name=".component.gank_detail.GankDetailActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".component.gank_user.GankCollectionActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".component.gank_user.GankHistoryActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".component.gank_user.GankLaterReaderActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>
