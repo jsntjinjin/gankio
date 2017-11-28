@@ -4,7 +4,7 @@ package com.fastaoe.gankio.model.services;
 import com.fastaoe.gankio.model.beans.AddToGankBean;
 import com.fastaoe.gankio.model.beans.AddToGankResult;
 import com.fastaoe.gankio.model.beans.AllContent;
-import com.fastaoe.gankio.model.beans.Content;
+import com.fastaoe.gankio.model.beans.GankContent;
 import com.fastaoe.gankio.model.beans.HistoryForOneDay;
 import com.fastaoe.gankio.model.beans.HistoryList;
 import com.fastaoe.gankio.model.beans.HistoryForSomeDay;
@@ -55,9 +55,9 @@ public interface GankService {
 
     // 每日数据： http://gank.io/api/day/年/月/日
     @GET("day/{year}/{month}/{day}")
-    Observable<Content> getContent(@Path("year") String year,
-                                   @Path("month") String month,
-                                   @Path("day") String day);
+    Observable<GankContent> getContent(@Path("year") String year,
+                                       @Path("month") String month,
+                                       @Path("day") String day);
 
     // 随机数据：http://gank.io/api/random/data/分类/个数
     // category -> 福利 | Android | iOS | 休息视频 | 拓展资源 | 前端

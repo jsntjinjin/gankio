@@ -9,7 +9,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.fastaoe.baselibrary.basemvp.BaseFragment;
 import com.fastaoe.gankio.R;
+import com.fastaoe.gankio.component.gank_detail.GankDetailActivity;
 import com.fastaoe.gankio.model.beans.AllContent;
+import com.fastaoe.gankio.utils.DateUtil;
 import com.fastaoe.gankio.widget.recycler.DefaultLoadCreator;
 import com.fastaoe.gankio.widget.recycler.DefaultRefreshCreator;
 import com.fastaoe.gankio.widget.recycler.GridLayoutItemDecoration;
@@ -17,6 +19,8 @@ import com.fastaoe.gankio.widget.recycler.LinearLayoutItemDecoration;
 import com.fastaoe.gankio.widget.recycler.base.RecyclerAdapter;
 import com.fastaoe.gankio.widget.recycler.base.ViewHolder;
 import com.fastaoe.gankio.widget.recycler.refresh.LoadRefreshRecyclerView;
+
+import java.util.Date;
 
 import butterknife.BindView;
 
@@ -52,7 +56,7 @@ public class GankAllFragment extends BaseFragment implements GankAllContract.Vie
 
     private void initRecycleView() {
         loadRecycle.setLayoutManager(new GridLayoutManager(mContext, 2));
-//        loadRecycle.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        //        loadRecycle.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         loadRecycle.addItemDecoration(new LinearLayoutItemDecoration(mContext, R.drawable.shape_item_dirver_01));
         loadRecycle.addRefreshViewCreator(new DefaultRefreshCreator());
         loadRecycle.addLoadViewCreator(new DefaultLoadCreator());
@@ -78,6 +82,11 @@ public class GankAllFragment extends BaseFragment implements GankAllContract.Vie
 
         adapter.setOnItemClickListener(position -> {
             // TODO: 17/11/14 添加跳转gankDetailActivity
+            Date publishedAt = gankAllPresenter.getList().get(position).getPublishedAt();
+            GankDetailActivity.startGankDetailActivity(mContext,
+                    DateUtil.getDateYear(publishedAt) + "",
+                    DateUtil.getDateMonth(publishedAt) + "",
+                    DateUtil.getDateDay(publishedAt) + "");
         });
         return adapter;
     }

@@ -127,7 +127,7 @@ public class DateUtil {
     public static int getDateMonth(String date) {
         long l = Long.parseLong(date);
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new java.util.Date(l));
+        calendar.setTime(new Date(l));
         // 这里要注意，月份是从0开始。
         return calendar.get(Calendar.MONTH) + 1;
     }
@@ -135,8 +135,28 @@ public class DateUtil {
     public static int getDateYear(String date) {
         long l = Long.parseLong(date);
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new java.util.Date(l));
+        calendar.setTime(new Date(l));
         // 获取年
         return calendar.get(Calendar.YEAR);
+    }
+
+    public static int getDateYear(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        // 获取年
+        return calendar.get(Calendar.YEAR);
+    }
+
+    public static int getDateMonth(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        // 这里要注意，月份是从0开始。
+        return calendar.get(Calendar.MONTH) + 1;
+    }
+
+    public static int getDateDay(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.DATE);
     }
 }
