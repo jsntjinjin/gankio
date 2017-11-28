@@ -31,6 +31,7 @@ public class GankOtherFragment extends BaseFragment implements GankOtherContract
 
     private GankOtherPresenter gankOtherPresenter;
     private String item;
+    private RecyclerView.Adapter adapter;
 
     public static GankOtherFragment newInstance(String item) {
         GankOtherFragment fragment = new GankOtherFragment();
@@ -58,7 +59,8 @@ public class GankOtherFragment extends BaseFragment implements GankOtherContract
         loadRecycle.addRefreshViewCreator(new DefaultRefreshCreator());
         loadRecycle.addLoadViewCreator(new DefaultLoadCreator());
         //        loadRecycle.addEmptyView(new View(mContext));
-        loadRecycle.setAdapter(initAdapter());
+        adapter = initAdapter();
+        loadRecycle.setAdapter(adapter);
         loadRecycle.setOnRefreshListener(() -> {
             gankOtherPresenter.refreshContent(false, item);
         });
@@ -89,23 +91,10 @@ public class GankOtherFragment extends BaseFragment implements GankOtherContract
                             // TODO: 17/11/14 添加跳转gankDetailActivity
                             gankOtherPresenter.setReaded(position);
                         });
-                holder.getView(R.id.itv_collection).setOnClickListener(view -> {
-                    // true:收藏成功 false:取消收藏
-                    boolean collectioned = gankOtherPresenter.setCollectionOrNot(position);
-                    holder.setIcon(R.id.itv_collection,
-                            collectioned ? "{fa-heart}" : "{fa-heart-o}",
-                            collectioned ? getResources().getColor(R.color.text_orange)
-                                    : getResources().getColor(R.color.text_grey));
-
-                });
-                holder.getView(R.id.itv_later_read).setOnClickListener(view -> {
-                    // true:设置稍后阅读 false:取消稍后阅读
-                    boolean laterReadered = gankOtherPresenter.setLaterReaderOrNot(position);
-                    holder.setIcon(R.id.itv_later_read,
-                            "{fa-clock-o}",
-                            laterReadered ? getResources().getColor(R.color.text_orange)
-                                    : getResources().getColor(R.color.text_grey));
-                });
+                holder.getView(R.id.itv_collection).setOnClickListener(view ->
+                        gankOtherPresenter.setCollectionOrNot(position));
+                holder.getView(R.id.itv_later_read).setOnClickListener(view ->
+                        gankOtherPresenter.setLaterReaderOrNot(position));
             }
         };
         return adapter;
@@ -131,5 +120,10 @@ public class GankOtherFragment extends BaseFragment implements GankOtherContract
     @Override
     public void stopLoadMore() {
         loadRecycle.stopLoad();
+    }
+
+    @Override
+    public void refreshRecycle() {
+        adapter.notifyDataSetChanged();
     }
 }

@@ -17,6 +17,7 @@ public interface GankOtherContract {
 
         void stopLoadMore();
 
+        void refreshRecycle();
     }
 
     public interface Presenter {
@@ -25,9 +26,9 @@ public interface GankOtherContract {
 
         List<AllContent.ResultsBean> getList();
 
-        boolean setLaterReaderOrNot(int position);
+        void setLaterReaderOrNot(int position);
 
-        boolean setCollectionOrNot(int position);
+        void setCollectionOrNot(int position);
 
         void setReaded(int position);
     }

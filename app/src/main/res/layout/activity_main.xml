@@ -8,6 +8,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
+        android:background="@color/text_orange"
         android:layout_height="?attr/actionBarSize"/>
 
     <include layout="@layout/drawer_layout"/>

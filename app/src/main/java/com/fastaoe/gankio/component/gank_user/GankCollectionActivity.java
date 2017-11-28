@@ -14,6 +14,7 @@ import com.fastaoe.gankio.R;
 import com.fastaoe.gankio.base.MyBaseActivity;
 import com.fastaoe.gankio.model.database.GankItemProfile;
 import com.fastaoe.gankio.utils.DateUtil;
+import com.fastaoe.gankio.widget.navigationbar.DefaultNavigationBar;
 import com.fastaoe.gankio.widget.recycler.LinearLayoutItemDecoration;
 import com.fastaoe.gankio.widget.recycler.base.MuliteTypeSupport;
 import com.fastaoe.gankio.widget.recycler.base.RecyclerAdapter;
@@ -51,7 +52,9 @@ public class GankCollectionActivity extends MyBaseActivity implements GankUserCo
 
     @Override
     protected void initTitle() {
-
+        new DefaultNavigationBar.Builder(this)
+                .setTitle("我的收藏")
+                .builder();
     }
 
     @Override

@@ -42,7 +42,7 @@ public class GankOtherPresenter extends BasePresenter<GankOtherContract.View> im
     }
 
     @Override
-    public boolean setLaterReaderOrNot(int position) {
+    public void setLaterReaderOrNot(int position) {
         AllContent.ResultsBean resultsBean1 = getList().get(position);
         GankItemProfile gankItemProfile = DataBaseManager.getInstance()
                 .getGankItemProfileDao().load(resultsBean1.get_id());
@@ -51,7 +51,7 @@ public class GankOtherPresenter extends BasePresenter<GankOtherContract.View> im
             gankItemProfile.setLaterReadered(!gankItemProfile.getLaterReadered());
             gankItemProfile.setLaterReaderedAt(new Date(System.currentTimeMillis()));
             DataBaseManager.getInstance().getGankItemProfileDao().update(gankItemProfile);
-            return gankItemProfile.getLaterReadered();
+            resultsBean1.setLaterReadered(gankItemProfile.getLaterReadered());
         } else {
             // 没保存过 -> 保存
             GankItemProfile toSaveGankItemProfile = new GankItemProfile(
@@ -70,12 +70,14 @@ public class GankOtherPresenter extends BasePresenter<GankOtherContract.View> im
                     false,
                     new Date(0));
             DataBaseManager.getInstance().getGankItemProfileDao().insert(toSaveGankItemProfile);
-            return true;
+            resultsBean1.setLaterReadered(true);
         }
+        getList().set(position, resultsBean1);
+        getView().refreshRecycle();
     }
 
     @Override
-    public boolean setCollectionOrNot(int position) {
+    public void setCollectionOrNot(int position) {
         AllContent.ResultsBean resultsBean1 = getList().get(position);
         GankItemProfile gankItemProfile = DataBaseManager.getInstance()
                 .getGankItemProfileDao().load(resultsBean1.get_id());
@@ -84,7 +86,7 @@ public class GankOtherPresenter extends BasePresenter<GankOtherContract.View> im
             gankItemProfile.setCollectioned(!gankItemProfile.getCollectioned());
             gankItemProfile.setCollectionedAt(new Date(System.currentTimeMillis()));
             DataBaseManager.getInstance().getGankItemProfileDao().update(gankItemProfile);
-            return gankItemProfile.getCollectioned();
+            resultsBean1.setCollectioned(gankItemProfile.getCollectioned());
         } else {
             // 没保存过 -> 保存
             GankItemProfile toSaveGankItemProfile = new GankItemProfile(
@@ -103,8 +105,10 @@ public class GankOtherPresenter extends BasePresenter<GankOtherContract.View> im
                     false,
                     new Date(0));
             DataBaseManager.getInstance().getGankItemProfileDao().insert(toSaveGankItemProfile);
-            return true;
+            resultsBean1.setCollectioned(true);
         }
+        getList().set(position, resultsBean1);
+        getView().refreshRecycle();
     }
 
     @Override
