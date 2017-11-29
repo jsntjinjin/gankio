@@ -35,5 +35,5 @@ public abstract class LoadViewCreator {
     /**
      * 停止加载
      */
-    public abstract void onStopLoad();
+    public abstract void onStopLoad(String isToBottom);
 }

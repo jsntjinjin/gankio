@@ -15,7 +15,7 @@ public interface GankOtherContract {
 
         void stopRefresh();
 
-        void stopLoadMore();
+        void stopLoadMore(String loadText);
 
         void refreshRecycle();
     }

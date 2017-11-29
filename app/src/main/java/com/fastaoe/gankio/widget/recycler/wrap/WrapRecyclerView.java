@@ -2,7 +2,9 @@ package com.fastaoe.gankio.widget.recycler.wrap;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -49,7 +51,18 @@ public class WrapRecyclerView extends RecyclerView {
         mAdapter.registerAdapterDataObserver(mDataObserver);
 
         // 解决GridLayout添加头部和底部也要占据一行
-        mWrapRecyclerAdapter.adjustSpanSize(this);
+        if (isShouldSpan) {
+            mWrapRecyclerAdapter.adjustSpanSize(this);
+        }
+    }
+
+    private boolean isShouldSpan;
+
+    @Override
+    public void setLayoutManager(LayoutManager layout) {
+        if (layout instanceof GridLayoutManager || layout instanceof StaggeredGridLayoutManager)
+            isShouldSpan = true;
+        super.setLayoutManager(layout);
     }
 
     public void addHeaderView(View view) {

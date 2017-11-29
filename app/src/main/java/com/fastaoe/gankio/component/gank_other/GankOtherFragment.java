@@ -121,8 +121,8 @@ public class GankOtherFragment extends BaseFragment implements GankOtherContract
     }
 
     @Override
-    public void stopLoadMore() {
-        loadRecycle.stopLoad();
+    public void stopLoadMore(String loadText) {
+        loadRecycle.stopLoad(loadText);
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.fastaoe.gankio.model.Token;
 import com.fastaoe.gankio.model.beans.AllContent;
 import com.fastaoe.gankio.model.database.DataBaseManager;
 import com.fastaoe.gankio.model.database.GankItemProfile;
+import com.fastaoe.gankio.widget.recycler.DefaultLoadCreator;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,6 +21,7 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.BiFunction;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
@@ -154,6 +156,8 @@ public class GankOtherPresenter extends BasePresenter<GankOtherContract.View> im
             page++;
         }
 
+        boolean isToBottom;
+
         //noinspection unchecked
         Observable.zip(
                 DataModel.request(Token.ALL_CONTENT).params(item, "10", String.valueOf(page)).execute(),
@@ -177,34 +181,38 @@ public class GankOtherPresenter extends BasePresenter<GankOtherContract.View> im
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<AllContent.ResultsBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
+                .subscribe(value -> {
+                    if (!isLoadMore) {
+                        gankOhterList.clear();
                     }
-
-                    @Override
-                    public void onNext(List<AllContent.ResultsBean> value) {
-                        if (!isLoadMore) {
-                            gankOhterList.clear();
-                        }
-                        gankOhterList.addAll(value);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        if (!isLoadMore) {
-                            getView().stopRefresh();
+                    gankOhterList.addAll((List<AllContent.ResultsBean>)value);
+                    if (!isLoadMore) {
+                        getView().stopRefresh();
+                    } else {
+                        if (((List<AllContent.ResultsBean>)value).size() > 0) {
+                            getView().stopLoadMore(DefaultLoadCreator.LOAD_RESULT_TEXT_LOAD_MORE);
                         } else {
-                            getView().stopLoadMore();
+                            getView().stopLoadMore(DefaultLoadCreator.LOAD_RESULT_TEXT_TO_BOTTOM);
                         }
                     }
-                });
+                }, throwable -> getView().stopLoadMore(DefaultLoadCreator.LOAD_RESULT_TEXT_LOAD_ERROR));
+        //                .map(new Function<List<AllContent.ResultsBean>, Boolean>() {
+        //                    @Override
+        //                    public Boolean apply(List<AllContent.ResultsBean> resultsBeans) throws Exception {
+        //                        if (!isLoadMore) {
+        //                            gankOhterList.clear();
+        //                        }
+        //                        gankOhterList.addAll(resultsBeans);
+        //                        return resultsBeans.size() > 0;
+        //                    }
+        //                })
+        //                .subscribe(isToBottom1 -> {
+        //                    if (!isLoadMore) {
+        //                        getView().stopRefresh();
+        //                    } else {
+        //                        getView().stopLoadMore();
+        //                    }
+        //                });
 
         //        //noinspection unchecked
         //        DataModel.request(Token.ALL_CONTENT)

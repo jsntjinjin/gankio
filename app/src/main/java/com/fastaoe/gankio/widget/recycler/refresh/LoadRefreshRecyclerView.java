@@ -205,11 +205,11 @@ public class LoadRefreshRecyclerView extends RefreshRecyclerView {
     /**
      * 停止加载更多
      */
-    public void stopLoad() {
+    public void stopLoad(String isToBottom) {
         mCurrentLoadStatus = LOAD_STATUS_NORMAL;
         restoreLoadView();
         if (mLoadCreator != null) {
-            mLoadCreator.onStopLoad();
+            mLoadCreator.onStopLoad(isToBottom);
         }
     }
 

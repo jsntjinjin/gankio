@@ -55,8 +55,8 @@ public class GankAllFragment extends BaseFragment implements GankAllContract.Vie
     }
 
     private void initRecycleView() {
-        loadRecycle.setLayoutManager(new GridLayoutManager(mContext, 2));
-        //        loadRecycle.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+//        loadRecycle.setLayoutManager(new GridLayoutManager(mContext, 2));
+                loadRecycle.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         loadRecycle.addItemDecoration(new LinearLayoutItemDecoration(mContext, R.drawable.shape_item_dirver_01));
         loadRecycle.addRefreshViewCreator(new DefaultRefreshCreator());
         loadRecycle.addLoadViewCreator(new DefaultLoadCreator());
@@ -106,7 +106,7 @@ public class GankAllFragment extends BaseFragment implements GankAllContract.Vie
     }
 
     @Override
-    public void stopLoadMore() {
-        loadRecycle.stopLoad();
+    public void stopLoadMore(String loadText) {
+        loadRecycle.stopLoad(loadText);
     }
 }

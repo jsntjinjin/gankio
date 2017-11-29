@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.TextView;
 
 import com.fastaoe.gankio.R;
 import com.fastaoe.gankio.widget.recycler.refresh.RefreshViewCreator;
@@ -19,11 +20,13 @@ public class DefaultRefreshCreator extends RefreshViewCreator {
 
     // 加载数据的ImageView
     private View mRefreshIv;
+    private TextView tvRefresh;
 
     @Override
     public View getRefreshView(Context context, ViewGroup parent) {
         View refreshView = LayoutInflater.from(context).inflate(R.layout.layout_refresh_header_view, parent, false);
         mRefreshIv = refreshView.findViewById(R.id.refresh_iv);
+        tvRefresh = refreshView.findViewById(R.id.tv_refresh);
         return refreshView;
     }
 

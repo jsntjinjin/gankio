@@ -16,7 +16,7 @@ public interface GankAllContract {
 
         void stopRefresh();
 
-        void stopLoadMore();
+        void stopLoadMore(String loadText);
 
     }
 

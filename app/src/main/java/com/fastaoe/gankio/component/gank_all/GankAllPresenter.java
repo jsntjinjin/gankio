@@ -5,6 +5,7 @@ import com.fastaoe.gankio.model.DataModel;
 import com.fastaoe.gankio.model.Token;
 import com.fastaoe.gankio.model.beans.AllContent;
 import com.fastaoe.gankio.utils.DateUtil;
+import com.fastaoe.gankio.widget.recycler.DefaultLoadCreator;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -76,16 +77,21 @@ public class GankAllPresenter extends BasePresenter<GankAllContract.View> implem
                         results.addAll(value);
                         // getView().refreshContent();
 
+
                         if (!isLoadMore) {
                             getView().stopRefresh();
                         } else {
-                            getView().stopLoadMore();
+                            if (value.size() > 0) {
+                                getView().stopLoadMore(DefaultLoadCreator.LOAD_RESULT_TEXT_LOAD_MORE);
+                            } else {
+                                getView().stopLoadMore(DefaultLoadCreator.LOAD_RESULT_TEXT_TO_BOTTOM);
+                            }
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        getView().stopLoadMore(DefaultLoadCreator.LOAD_RESULT_TEXT_LOAD_ERROR);
                     }
                 });
     }

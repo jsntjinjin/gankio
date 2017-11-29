@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.TextView;
 
 import com.fastaoe.gankio.R;
 import com.fastaoe.gankio.widget.recycler.refresh.LoadViewCreator;
@@ -17,37 +18,34 @@ import com.fastaoe.gankio.widget.recycler.refresh.LoadViewCreator;
 
 public class DefaultLoadCreator extends LoadViewCreator {
 
+    public static final String LOAD_RESULT_TEXT_LOAD_MORE = "加载更多~~~";
+    public static final String LOAD_RESULT_TEXT_TO_BOTTOM = "到达底部~~~";
+    public static final String LOAD_RESULT_TEXT_LOADING = "正在加载更多~~~";
+    public static final String LOAD_RESULT_TEXT_LOAD_ERROR = "加载错误~~~";
+
     // 加载数据的ImageView
-    private View mRefreshIv;
+    private TextView mRefreshIv;
 
     @Override
     public View getLoadView(Context context, ViewGroup parent) {
-        View refreshView = LayoutInflater.from(context).inflate(R.layout.layout_refresh_header_view, parent, false);
-        mRefreshIv = refreshView.findViewById(R.id.refresh_iv);
+        View refreshView = LayoutInflater.from(context).inflate(R.layout.layout_refresh_load_view, parent, false);
+        mRefreshIv = refreshView.findViewById(R.id.refresh_tv);
         return refreshView;
     }
 
     @Override
     public void onPull(int currentDragHeight, int refreshViewHeight, int currentRefreshStatus) {
-        float rotate = ((float) currentDragHeight) / refreshViewHeight;
-        // 不断下拉的过程中不断的旋转图片
-        mRefreshIv.setRotation(rotate * 360);
+        mRefreshIv.setText(LOAD_RESULT_TEXT_LOADING);
     }
 
     @Override
     public void onLoading() {
-        // 刷新的时候不断旋转
-        RotateAnimation animation = new RotateAnimation(0, 720,
-                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        animation.setRepeatCount(-1);
-        animation.setDuration(1000);
-        mRefreshIv.startAnimation(animation);
+
     }
 
     @Override
-    public void onStopLoad() {
+    public void onStopLoad(String text) {
         // 停止加载的时候清除动画
-        mRefreshIv.setRotation(0);
-        mRefreshIv.clearAnimation();
+        mRefreshIv.setText(text);
     }
 }

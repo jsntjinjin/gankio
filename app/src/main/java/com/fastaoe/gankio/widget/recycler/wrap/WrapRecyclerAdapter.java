@@ -2,6 +2,7 @@ package com.fastaoe.gankio.widget.recycler.wrap;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,12 @@ public class WrapRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     private RecyclerView.ViewHolder createHeaderOrFooterViewHolder(View view) {
+        if (isStaggered) {
+            StaggeredGridLayoutManager.LayoutParams params = new StaggeredGridLayoutManager.LayoutParams(StaggeredGridLayoutManager.LayoutParams.MATCH_PARENT,
+                    StaggeredGridLayoutManager.LayoutParams.WRAP_CONTENT);
+            params.setFullSpan(true);
+            view.setLayoutParams(params);
+        }
         return new ViewHolder(view);
     }
 
@@ -127,6 +134,8 @@ public class WrapRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return position < headers.size();
     }
 
+    private boolean isStaggered;
+
     /**
      * 解决GridLayoutManager添加头部和底部不占用一行的问题
      *
@@ -144,6 +153,10 @@ public class WrapRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     return isHeaderOrFooter ? layoutManager.getSpanCount() : 1;
                 }
             });
+        }
+
+        if (recycler.getLayoutManager() instanceof StaggeredGridLayoutManager) {
+            isStaggered = true;
         }
     }
 }
