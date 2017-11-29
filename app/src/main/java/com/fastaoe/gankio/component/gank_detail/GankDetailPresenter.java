@@ -3,8 +3,12 @@ package com.fastaoe.gankio.component.gank_detail;
 import com.fastaoe.baselibrary.basemvp.BasePresenter;
 import com.fastaoe.gankio.model.DataModel;
 import com.fastaoe.gankio.model.Token;
+import com.fastaoe.gankio.model.beans.AllContent;
 import com.fastaoe.gankio.model.beans.GankContent;
+import com.fastaoe.gankio.model.database.DataBaseManager;
+import com.fastaoe.gankio.model.database.GankItemProfile;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +53,7 @@ public class GankDetailPresenter extends BasePresenter<GankDetailContract.View> 
                         addAllItem(list, results.getHtmlWeb());
                         addAllItem(list, results.getDevelopmentResource());
                         addAllItem(list, results.getBlindRecommendation());
+                        addAllItem(list, results.getRestVideo());
                         if (results.getWelfare() != null && results.getWelfare().size() > 0) {
                             imageUrl = results.getWelfare().get(0).getUrl();
                         }
@@ -93,5 +98,36 @@ public class GankDetailPresenter extends BasePresenter<GankDetailContract.View> 
     @Override
     public String getImage() {
         return imageUrl;
+    }
+
+    @Override
+    public void setReaded(int position) {
+        GankContent.ResultsBean.ContentBean resultsBean1 = getList().get(position);
+        GankItemProfile gankItemProfile = DataBaseManager.getInstance()
+                .getGankItemProfileDao().load(resultsBean1.get_id());
+        if (gankItemProfile != null) {
+            // 保存过
+            gankItemProfile.setReaded(true);
+            gankItemProfile.setReadedAt(new Date(System.currentTimeMillis()));
+            DataBaseManager.getInstance().getGankItemProfileDao().update(gankItemProfile);
+        } else {
+            // 没保存过 -> 保存
+            GankItemProfile toSaveGankItemProfile = new GankItemProfile(
+                    resultsBean1.get_id(),
+                    resultsBean1.getCreatedAt(),
+                    resultsBean1.getDesc(),
+                    resultsBean1.getPublishedAt(),
+                    resultsBean1.getType(),
+                    resultsBean1.getUrl(),
+                    resultsBean1.getWho(),
+                    null,
+                    false,
+                    new Date(0),
+                    false,
+                    new Date(0),
+                    true,
+                    new Date(System.currentTimeMillis()));
+            DataBaseManager.getInstance().getGankItemProfileDao().insert(toSaveGankItemProfile);
+        }
     }
 }

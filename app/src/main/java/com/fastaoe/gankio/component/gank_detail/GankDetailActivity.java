@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.fastaoe.gankio.R;
 import com.fastaoe.gankio.base.MyBaseActivity;
+import com.fastaoe.gankio.base.MyBaseWebActivity;
 import com.fastaoe.gankio.model.beans.GankContent;
 import com.fastaoe.gankio.widget.navigationbar.DefaultNavigationBar;
 import com.fastaoe.gankio.widget.recycler.base.ItemClickListener;
@@ -38,7 +39,7 @@ public class GankDetailActivity extends MyBaseActivity implements GankDetailCont
 
     private ArrayList<String> date;
     private GankDetailPresenter gankDetailPresenter;
-    private ImageView ivMeizi;
+//    private ImageView ivMeizi;
 
     public static void startGankDetailActivity(Context context, String year, String month, String day) {
         Intent intent = new Intent(context, GankDetailActivity.class);
@@ -74,9 +75,9 @@ public class GankDetailActivity extends MyBaseActivity implements GankDetailCont
         loadRecycle.setLayoutManager(new LinearLayoutManager(this));
         loadRecycle.setAdapter(initAdapter());
 
-        View header = LayoutInflater.from(this).inflate(R.layout.item_gank_detail_header, loadRecycle, false);
-        ivMeizi = header.findViewById(R.id.iv_meizi);
-        loadRecycle.addHeaderView(header);
+//        View header = LayoutInflater.from(this).inflate(R.layout.item_gank_detail_header, loadRecycle, false);
+//        ivMeizi = header.findViewById(R.id.iv_meizi);
+//        loadRecycle.addHeaderView(header);
     }
 
     private RecyclerView.Adapter initAdapter() {
@@ -99,8 +100,9 @@ public class GankDetailActivity extends MyBaseActivity implements GankDetailCont
             }
         };
         adapter.setOnItemClickListener(position -> {
-            // TODO: 17/11/28 跳转gank详情
-            gankDetailPresenter.getList().get(position);
+            GankContent.ResultsBean.ContentBean contentBean = gankDetailPresenter.getList().get(position);
+            gankDetailPresenter.setReaded(position);
+            MyBaseWebActivity.startMyBaseWebActivity(this, contentBean.getUrl(), contentBean.getDesc());
         });
         return adapter;
     }
@@ -117,9 +119,9 @@ public class GankDetailActivity extends MyBaseActivity implements GankDetailCont
 
     @Override
     public void refreshContent() {
-        if (gankDetailPresenter.getImage() != null) {
-            Glide.with(this).load(gankDetailPresenter.getImage()).into(ivMeizi);
-        }
+//        if (gankDetailPresenter.getImage() != null) {
+//            Glide.with(this).load(gankDetailPresenter.getImage()).into(ivMeizi);
+//        }
         loadRecycle.getAdapter().notifyDataSetChanged();
     }
 }

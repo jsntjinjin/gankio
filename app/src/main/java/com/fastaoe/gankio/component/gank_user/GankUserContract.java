@@ -20,6 +20,8 @@ public interface GankUserContract {
         void showContent(String query);
 
         List<GankItemProfile> getList();
+
+        void setReaded(int position);
     }
 
 }

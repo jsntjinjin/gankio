@@ -34,7 +34,10 @@
         <activity
             android:name=".component.gank_user.GankLaterReaderActivity"
             android:screenOrientation="portrait"/>
-
+        <activity
+            android:name=".base.MyBaseWebActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

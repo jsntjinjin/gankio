@@ -76,12 +76,11 @@ public class GankAllFragment extends BaseFragment implements GankAllContract.Vie
             protected void convert(ViewHolder holder, AllContent.ResultsBean data, int position) {
                 holder.setText(R.id.tv_title, data.getDesc());
                 ImageView view = holder.getView(R.id.iv_meizi);
-                Glide.with(mContext).load(data.getUrl()).apply(new RequestOptions().centerCrop()).into(view);
+                Glide.with(mContext).load(data.getUrl() /*+ "?imageView2/0/w/100"*/).apply(new RequestOptions().centerCrop()).into(view);
             }
         };
 
         adapter.setOnItemClickListener(position -> {
-            // TODO: 17/11/14 添加跳转gankDetailActivity
             Date publishedAt = gankAllPresenter.getList().get(position).getPublishedAt();
             GankDetailActivity.startGankDetailActivity(mContext,
                     DateUtil.getDateYear(publishedAt) + "",

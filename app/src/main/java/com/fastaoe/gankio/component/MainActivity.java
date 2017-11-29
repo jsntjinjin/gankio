@@ -1,5 +1,7 @@
 package com.fastaoe.gankio.component;
 
+import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,6 +16,7 @@ import com.fastaoe.gankio.component.gank_meizi.MeiziFragment;
 import com.fastaoe.gankio.component.gank_user.GankCollectionActivity;
 import com.fastaoe.gankio.component.other.AboutFragment;
 import com.fastaoe.gankio.component.other.MineFragment;
+import com.fastaoe.gankio.utils.LogUtil;
 
 import butterknife.BindView;
 
@@ -74,7 +77,9 @@ public class MainActivity extends MyBaseActivity {
 
     @Override
     protected void initData() {
-        helper = new FragmentManagerHelper(getSupportFragmentManager(), R.id.content_frame);
+        if (helper == null) {
+            helper = new FragmentManagerHelper(getSupportFragmentManager(), R.id.content_frame);
+        }
         chooseFragment("干货");
     }
 
@@ -102,5 +107,4 @@ public class MainActivity extends MyBaseActivity {
                 break;
         }
     }
-
 }

@@ -12,10 +12,12 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.fastaoe.gankio.R;
 import com.fastaoe.gankio.base.MyBaseActivity;
+import com.fastaoe.gankio.base.MyBaseWebActivity;
 import com.fastaoe.gankio.model.database.GankItemProfile;
 import com.fastaoe.gankio.utils.DateUtil;
 import com.fastaoe.gankio.widget.navigationbar.DefaultNavigationBar;
 import com.fastaoe.gankio.widget.recycler.LinearLayoutItemDecoration;
+import com.fastaoe.gankio.widget.recycler.base.ItemClickListener;
 import com.fastaoe.gankio.widget.recycler.base.MuliteTypeSupport;
 import com.fastaoe.gankio.widget.recycler.base.RecyclerAdapter;
 import com.fastaoe.gankio.widget.recycler.base.ViewHolder;
@@ -110,6 +112,11 @@ public class GankCollectionActivity extends MyBaseActivity implements GankUserCo
                 }
             }
         };
+        adapter.setOnItemClickListener(position -> {
+            GankItemProfile gankItemProfile = gankUserPresenter.getList().get(position);
+            gankUserPresenter.setReaded(position);
+            MyBaseWebActivity.startMyBaseWebActivity(this, gankItemProfile.getUrl(), gankItemProfile.getDesc());
+        });
         return adapter;
     }
 

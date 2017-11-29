@@ -3,6 +3,7 @@ package com.fastaoe.gankio.model.database;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import org.greenrobot.greendao.annotation.Generated;
@@ -13,7 +14,7 @@ import org.greenrobot.greendao.annotation.Generated;
  */
 
 @Entity(nameInDb = "gank_item_profile")
-public class GankItemProfile {
+public class GankItemProfile{
 
     @Id
     private String id;// gankio.com中的id用来查询

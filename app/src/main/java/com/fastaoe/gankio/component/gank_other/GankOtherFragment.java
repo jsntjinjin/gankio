@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.fastaoe.baselibrary.basemvp.BaseFragment;
 import com.fastaoe.gankio.R;
+import com.fastaoe.gankio.base.MyBaseWebActivity;
 import com.fastaoe.gankio.model.beans.AllContent;
 import com.fastaoe.gankio.widget.recycler.DefaultLoadCreator;
 import com.fastaoe.gankio.widget.recycler.DefaultRefreshCreator;
@@ -90,6 +91,8 @@ public class GankOtherFragment extends BaseFragment implements GankOtherContract
                         .setOnItemClickListener(view -> {
                             // TODO: 17/11/14 添加跳转gankDetailActivity
                             gankOtherPresenter.setReaded(position);
+                            AllContent.ResultsBean resultsBean = gankOtherPresenter.getList().get(position);
+                            MyBaseWebActivity.startMyBaseWebActivity(mContext, resultsBean.getUrl(), resultsBean.getDesc());
                         });
                 holder.getView(R.id.itv_collection).setOnClickListener(view ->
                         gankOtherPresenter.setCollectionOrNot(position));

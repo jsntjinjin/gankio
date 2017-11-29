@@ -23,6 +23,8 @@ public interface GankDetailContract {
         public List<GankContent.ResultsBean.ContentBean> getList();
 
         String getImage();
+
+        void setReaded(int position);
     }
 
 }

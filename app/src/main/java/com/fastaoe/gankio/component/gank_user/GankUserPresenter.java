@@ -3,8 +3,11 @@ package com.fastaoe.gankio.component.gank_user;
 import com.fastaoe.baselibrary.basemvp.BasePresenter;
 import com.fastaoe.gankio.model.DataModel;
 import com.fastaoe.gankio.model.Token;
+import com.fastaoe.gankio.model.beans.AllContent;
+import com.fastaoe.gankio.model.database.DataBaseManager;
 import com.fastaoe.gankio.model.database.GankItemProfile;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,5 +71,13 @@ public class GankUserPresenter extends BasePresenter<GankUserContract.View> impl
             list = new ArrayList<>();
         }
         return list;
+    }
+
+    @Override
+    public void setReaded(int position) {
+        GankItemProfile gankItemProfile = getList().get(position);
+        gankItemProfile.setReaded(true);
+        gankItemProfile.setReadedAt(new Date(System.currentTimeMillis()));
+        DataBaseManager.getInstance().getGankItemProfileDao().update(gankItemProfile);
     }
 }
