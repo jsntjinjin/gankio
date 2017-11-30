@@ -29,5 +29,6 @@ public class Constants {
         return "http://gank.io/api/";
     }
 
-    public static final int PERMISSION_READ_WRITE_STORAGE = 0x0001;
+    public static final int PERMISSION_READ_WRITE_STORAGE_MEIZI_LIST = 0x0001;
+    public static final int PERMISSION_READ_WRITE_STORAGE_MEIZI = 0x0002;
 }

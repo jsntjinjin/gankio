@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.fastaoe.baselibrary.basemvp.BaseFragment;
+import com.fastaoe.baselibrary.dialog.AlertDialog;
 import com.fastaoe.baselibrary.permission.PermissionFailure;
 import com.fastaoe.baselibrary.permission.PermissionHelper;
 import com.fastaoe.baselibrary.permission.PermissionSuccess;
@@ -45,6 +46,7 @@ public class MeiziFragment extends BaseFragment implements MeiziContract.View {
     private TextView refreshAll;
 
     private int savePosition = 0;
+    private AlertDialog meiziDialog;
 
     public static MeiziFragment newInstance() {
         MeiziFragment fragment = new MeiziFragment();
@@ -72,7 +74,7 @@ public class MeiziFragment extends BaseFragment implements MeiziContract.View {
         refreshAll = footer.findViewById(R.id.tv_refresh);
         saveAll.setOnClickListener(view -> {
             // 全部保存
-            readWriteStoragePermission();
+            meiziPermission(Constants.PERMISSION_READ_WRITE_STORAGE_MEIZI_LIST);
         });
 
         loadRecycle.addFooterView(footer);
@@ -96,9 +98,7 @@ public class MeiziFragment extends BaseFragment implements MeiziContract.View {
             }
         };
 
-        adapter.setOnItemClickListener(position -> {
-
-        });
+        adapter.setOnItemClickListener(position -> meiziPresenter.showMeiziDialog(position));
         return adapter;
     }
 
@@ -111,29 +111,6 @@ public class MeiziFragment extends BaseFragment implements MeiziContract.View {
     @Override
     protected void destroyData() {
         meiziPresenter.detachView();
-    }
-
-    private void readWriteStoragePermission() {
-        PermissionHelper.with(this)
-                .requestCode(Constants.PERMISSION_READ_WRITE_STORAGE)
-                .permissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .request();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        PermissionHelper.onRequestPermissionsResult(this, requestCode, permissions);
-    }
-
-    @PermissionSuccess(requestCode = Constants.PERMISSION_READ_WRITE_STORAGE)
-    private void callSuccess() {
-        meiziPresenter.saveMeizi(meiziPresenter.getList());
-    }
-
-    @PermissionFailure(requestCode = Constants.PERMISSION_READ_WRITE_STORAGE)
-    private void callFailure() {
-        showToast("请在系统中允许读写SD卡权限");
     }
 
     @Override
@@ -169,4 +146,66 @@ public class MeiziFragment extends BaseFragment implements MeiziContract.View {
     public int setSavePosition() {
         return ++savePosition;
     }
+
+    @Override
+    public void showMeizi(RandomData.ResultsBean resultsBean) {
+        if (meiziDialog != null) {
+            meiziDialog.setImage(R.id.iv_meizi, resultsBean.getUrl());
+            meiziDialog.setTextColor(R.id.itv_save, resultsBean.isSaved() ? R.color.text_orange : R.color.text_caption);
+            meiziDialog.show();
+            return;
+        }
+
+        meiziDialog = new AlertDialog.Builder(mContext)
+                .setContentView(R.layout.dialog_meizi)
+                .setImage(R.id.iv_meizi, resultsBean.getUrl())
+                .setTextColor(R.id.itv_save, resultsBean.isSaved() ? R.color.text_orange : R.color.text_caption)
+                .fullWidth()
+                .show();
+
+        meiziDialog.setOnClickListener(R.id.iv_meizi, view -> meiziDialog.dismiss());
+        meiziDialog.setOnClickListener(R.id.itv_save, view -> meiziPermission(Constants.PERMISSION_READ_WRITE_STORAGE_MEIZI));
+    }
+
+    @Override
+    public void dialogRefresh(boolean saved) {
+        if (meiziDialog != null) {
+            meiziDialog.setTextColor(R.id.itv_save, saved ? R.color.text_orange : R.color.text_caption);
+        }
+    }
+
+    private void meiziPermission(int requestCode) {
+        PermissionHelper.with(this)
+                .requestCode(requestCode)
+                .permissions(Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .request();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionHelper.onRequestPermissionsResult(this, requestCode, permissions);
+    }
+
+    @PermissionSuccess(requestCode = Constants.PERMISSION_READ_WRITE_STORAGE_MEIZI_LIST)
+    private void callMeiziListSuccess() {
+        meiziPresenter.saveMeizi(meiziPresenter.getList());
+    }
+
+    @PermissionFailure(requestCode = Constants.PERMISSION_READ_WRITE_STORAGE_MEIZI_LIST)
+    private void callMeiziListFailure() {
+        showToast("请在系统中允许读写SD卡权限");
+    }
+
+    @PermissionSuccess(requestCode = Constants.PERMISSION_READ_WRITE_STORAGE_MEIZI)
+    private void callMeiziSuccess() {
+        meiziPresenter.saveMeizi(meiziPresenter.getShowMeizi());
+    }
+
+    @PermissionFailure(requestCode = Constants.PERMISSION_READ_WRITE_STORAGE_MEIZI)
+    private void callMeiziFailure() {
+        showToast("请在系统中允许读写SD卡权限");
+    }
+
 }

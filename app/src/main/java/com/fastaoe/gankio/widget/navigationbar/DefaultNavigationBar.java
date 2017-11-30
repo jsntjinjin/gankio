@@ -25,7 +25,7 @@ public class DefaultNavigationBar extends AbsNavigationBar<DefaultNavigationBar.
 
     @Override
     public int bindLayoutId() {
-        return R.layout.default_navigation_bar;
+        return R.layout.navigation_bar_default;
     }
 
     @Override

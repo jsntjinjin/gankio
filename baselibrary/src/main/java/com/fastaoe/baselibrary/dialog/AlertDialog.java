@@ -28,12 +28,24 @@ public class AlertDialog extends Dialog {
         mAlert.setText(viewId, text);
     }
 
+    public void setImage(int viewId, int imageResourceId){
+        mAlert.setImage(viewId, imageResourceId);
+    }
+
+    public void setImage(int viewId, String url) {
+        mAlert.setImage(viewId, url);
+    }
+
     public void setOnClickListener(int viewId, View.OnClickListener listener) {
         mAlert.setOnClickListener(viewId, listener);
     }
 
     private <T extends View> T getView(int viewId) {
         return mAlert.getView(viewId);
+    }
+
+    public void setTextColor(int viewId, int colorResoueceId) {
+        mAlert.settextColor(viewId, colorResoueceId);
     }
 
     public static class Builder {
@@ -62,6 +74,21 @@ public class AlertDialog extends Dialog {
 
         public Builder setText(int viewId, CharSequence text) {
             P.textArray.put(viewId, text);
+            return this;
+        }
+
+        public Builder setImage(int viewId, int imageResourceId) {
+            P.imageResource.put(viewId, imageResourceId);
+            return this;
+        }
+
+        public Builder setImage(int viewId, String url) {
+            P.imageUrl.put(viewId, url);
+            return this;
+        }
+
+        public Builder setTextColor(int viewId, int colorResourceId) {
+            P.textColorArray.put(viewId, colorResourceId);
             return this;
         }
 

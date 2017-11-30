@@ -4,7 +4,10 @@ import android.content.Context;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.lang.ref.WeakReference;
 
@@ -16,9 +19,11 @@ class DialogViewHelper {
 
     private View mContentView = null;
     private SparseArray<WeakReference<View>> mViews;
+    private Context mContent;
 
     public DialogViewHelper(Context mContext, int mContentLayoutResId) {
         mViews = new SparseArray<>();
+        mContent = mContext;
         this.mContentView = LayoutInflater.from(mContext).inflate(mContentLayoutResId, null);
     }
 
@@ -38,6 +43,27 @@ class DialogViewHelper {
         TextView tv = getView(viewId);
         if (tv != null) {
             tv.setText(text);
+        }
+    }
+
+    public void setTextColor(int viewId, Integer textColorId) {
+        TextView tv = getView(viewId);
+        if (tv != null) {
+            tv.setTextColor(textColorId);
+        }
+    }
+
+    public void setImage(int viewId, Integer resourceId) {
+        ImageView iv = getView(viewId);
+        if (iv != null) {
+            iv.setImageResource(resourceId);
+        }
+    }
+
+    public void setImage(int viewId, String url) {
+        ImageView iv = getView(viewId);
+        if (iv != null) {
+            Glide.with(mContent).load(url).into(iv);
         }
     }
 

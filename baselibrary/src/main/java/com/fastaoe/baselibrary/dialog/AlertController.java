@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import java.util.Dictionary;
+
 /**
  * Created by jinjin on 17/5/14.
  */
@@ -48,6 +50,18 @@ class AlertController {
         return helper.getView(viewId);
     }
 
+    public void setImage(int viewId, int imageResourceId) {
+        helper.setImage(viewId, imageResourceId);
+    }
+
+    public void setImage(int viewId, String url) {
+        helper.setImage(viewId, url);
+    }
+
+    public void settextColor(int viewId, int colorResoueceId) {
+        helper.setTextColor(viewId, colorResoueceId);
+    }
+
     public static class AlertParams {
 
         public Context mContext;
@@ -71,6 +85,12 @@ class AlertController {
         public int mAnimations = 0;
         // 默认中间
         public int mGravity = Gravity.CENTER;
+        // 存放imageResource
+        public SparseArray<Integer> imageResource = new SparseArray<>();
+        // 存放imageUrl
+        public SparseArray<String> imageUrl = new SparseArray<>();
+        // 存放文字颜色
+        public SparseArray<Integer> textColorArray = new SparseArray<>();
 
         public AlertParams(Context context, int themeResId) {
             this.mContext = context;
@@ -103,6 +123,29 @@ class AlertController {
             if (textSize > 0) {
                 for (int i = 0; i < textSize; i++) {
                     helper.setText(textArray.keyAt(i), textArray.valueAt(i));
+                }
+            }
+
+            int textColorSize = textColorArray.size();
+            if (textColorSize > 0) {
+                for (int i = 0; i < textColorSize; i++) {
+                    helper.setTextColor(textColorArray.keyAt(i), textColorArray.valueAt(i));
+                }
+            }
+
+            // 设置imageResource
+            int imageResourceSize = imageResource.size();
+            if (imageResourceSize > 0) {
+                for (int i = 0; i < imageResourceSize; i++) {
+                    helper.setImage(imageResource.keyAt(i), imageResource.valueAt(i));
+                }
+            }
+
+            // 设置imageUrl
+            int imageUrlSize = imageUrl.size();
+            if (imageUrlSize > 0) {
+                for (int i = 0; i < imageUrlSize; i++) {
+                    helper.setImage(imageUrl.keyAt(i), imageUrl.valueAt(i));
                 }
             }
 

@@ -21,6 +21,10 @@ public class MeiziContract {
         void saveMeiziEnd();
 
         int setSavePosition();
+
+        void showMeizi(RandomData.ResultsBean resultsBean);
+
+        void dialogRefresh(boolean saved);
     }
 
     public interface Presenter {
@@ -29,6 +33,12 @@ public class MeiziContract {
 
         void refreshContent();
 
+        void showMeiziDialog(int position);
+
         void saveMeizi(List<RandomData.ResultsBean> list);
+
+        void saveMeizi(RandomData.ResultsBean resultsBean);
+
+        RandomData.ResultsBean getShowMeizi();
     }
 }
