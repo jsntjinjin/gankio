@@ -139,6 +139,9 @@ public class MeiziFragment extends BaseFragment implements MeiziContract.View {
 
     @Override
     public void saveMeiziEnd() {
+        if (savePosition != 9) {
+            saveAll.setClickable(true);
+        }
         refreshAll.setClickable(true);
     }
 

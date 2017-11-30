@@ -186,7 +186,8 @@ public class MeiziPresenter extends BasePresenter<MeiziContract.View> implements
                             }
                         }
                         getView().dialogRefresh(value);
-                        getView().saveTextChanged("已存储（" + getView().setSavePosition() + "/" + length + "）");
+                        int position = getView().setSavePosition();
+                        getView().saveTextChanged((position != 9 ? "继续保存" : "已存储") + "（" + position + "/" + length + "）");
                         getView().saveMeiziEnd();
                     }
 
