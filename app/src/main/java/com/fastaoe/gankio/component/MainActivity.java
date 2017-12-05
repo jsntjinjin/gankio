@@ -6,6 +6,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.View;
 
 import com.fastaoe.baselibrary.basemvp.FragmentManagerHelper;
@@ -17,6 +18,8 @@ import com.fastaoe.gankio.component.gank_user.GankCollectionActivity;
 import com.fastaoe.gankio.component.other.AboutFragment;
 import com.fastaoe.gankio.component.other.MineFragment;
 import com.fastaoe.gankio.utils.LogUtil;
+
+import java.lang.reflect.Method;
 
 import butterknife.BindView;
 
@@ -38,6 +41,7 @@ public class MainActivity extends MyBaseActivity {
     private MeiziFragment meiziFragment;
     private AboutFragment aboutFragment;
     private MineFragment mineFragment;
+    private DefaultFragment githubFragment;
 
     @Override
     protected int getContentView() {
@@ -85,6 +89,8 @@ public class MainActivity extends MyBaseActivity {
 
     @Override
     protected void destroyData() {
+        Menu menu = drawerNavigation.getMenu();
+        setIconsVisible(menu, true);
     }
 
     private void chooseFragment(String itemTitle) {
@@ -101,10 +107,30 @@ public class MainActivity extends MyBaseActivity {
                 if (mineFragment == null) mineFragment = MineFragment.newInstance();
                 helper.switchFragment(mineFragment);
                 break;
-            case "关于我们":
+            case "关于我":
                 if (aboutFragment == null) aboutFragment = AboutFragment.newInstance(itemTitle);
                 helper.switchFragment(aboutFragment);
                 break;
+            case "登录Github":
+                if (aboutFragment == null) githubFragment = DefaultFragment.newInstance(itemTitle);
+                helper.switchFragment(githubFragment);
+                break;
+        }
+    }
+
+    private void setIconsVisible(Menu menu, boolean flag) {
+        //判断menu是否为空
+        if (menu != null) {
+            try {
+                //如果不为空,就反射拿到menu的setOptionalIconsVisible方法
+                Method method = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
+                //暴力访问该方法
+                method.setAccessible(true);
+                //调用该方法显示icon
+                method.invoke(menu, flag);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }
